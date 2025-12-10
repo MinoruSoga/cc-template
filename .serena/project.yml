@@ -1,0 +1,164 @@
+# Serena MCP Server - プロジェクト設定
+# このファイルは各プロジェクトごとにカスタマイズしてください
+
+# ===============================
+# 言語設定
+# ===============================
+# 対応言語: typescript, python, java, cpp, rust, go, php など
+languages:
+  - typescript
+
+# ===============================
+# エンコーディング
+# ===============================
+encoding: 'utf-8'
+
+# ===============================
+# Gitignore連携
+# ===============================
+# trueの場合、.gitignoreのパターンを自動的に適用
+ignore_all_files_in_gitignore: true
+
+# ===============================
+# 追加の除外パス
+# ===============================
+ignored_paths:
+  # 依存関係
+  - 'node_modules/'
+  - '.pnpm-store/'
+  - '.yarn/'
+  - 'vendor/'
+  - '__pycache__/'
+  - '.venv/'
+  - 'venv/'
+  
+  # ビルド成果物
+  - '.next/'
+  - 'out/'
+  - 'build/'
+  - 'dist/'
+  - 'target/'
+  - 'bin/'
+  - 'obj/'
+  
+  # テスト関連
+  - 'tests/'
+  - 'test-results/'
+  - 'playwright-report/'
+  - 'coverage/'
+  - '__tests__/'
+  - '*.test.ts'
+  - '*.test.tsx'
+  - '*.test.js'
+  - '*.test.jsx'
+  - '*.spec.ts'
+  - '*.spec.tsx'
+  - '*.spec.js'
+  - '*.spec.jsx'
+  
+  # ログ・デバッグファイル
+  - 'logs/'
+  - '*.log'
+  - '*.log.*'
+  
+  # ドキュメント・メディア（大容量）
+  - '*.pdf'
+  - '*.mp4'
+  - '*.mp3'
+  - '*.zip'
+  - '*.tar.gz'
+  
+  # キャッシュ・一時ファイル
+  - '.cache/'
+  - 'tmp/'
+  - 'temp/'
+  - '.parcel-cache/'
+  - '.turbo/'
+  - '*.tsbuildinfo'
+  
+  # データベース
+  - '*.db'
+  - '*.sqlite'
+  - '*.sqlite3'
+  - 'postgres_data/'
+  - 'pgdata/'
+  
+  # データファイル
+  - 'data/'
+  - 'uploads/'
+  - 'public/uploads/'
+  
+  # エディタ・IDE設定
+  - '.vscode/'
+  - '.idea/'
+  - '.claude/sessions/'
+  - '.claude/plans/'
+  - '.claude/file-history/'
+  - '*.swp'
+  - '*.swo'
+  - '*~'
+  
+  # OS固有
+  - '.DS_Store'
+  - 'Thumbs.db'
+  - '._*'
+  - 'Desktop.ini'
+  
+  # 環境変数
+  - '.env*'
+
+# ===============================
+# 読み取り専用モード
+# ===============================
+# trueの場合、編集ツールが無効化されメモリ使用量が削減される
+# コード分析のみを行う場合はtrueを推奨
+read_only: false
+
+# ===============================
+# 除外ツール
+# ===============================
+# メモリ削減のため、不要なツールを除外
+# read_only: true の場合、編集系ツールは自動的に無効化される
+excluded_tools:
+  # シェル実行（セキュリティリスクあり）
+  # - execute_shell_command
+  
+  # 編集系（read_only: true で自動無効化）
+  # - create_text_file
+  # - delete_lines
+  # - insert_after_symbol
+  # - insert_at_line
+  # - insert_before_symbol
+  # - replace_lines
+  # - replace_symbol_body
+  
+  # メモリ関連（必要に応じて）
+  # - write_memory
+  # - delete_memory
+  
+  # オンボーディング（初回のみ必要）
+  # - onboarding
+  
+  # その他（必要に応じて）
+  # - summarize_changes
+  # - think_about_collected_information
+  # - think_about_task_adherence
+  # - think_about_whether_you_are_done
+
+# ===============================
+# 初期プロンプト
+# ===============================
+# プロジェクト固有の指示がある場合に設定
+initial_prompt: ''
+
+# ===============================
+# プロジェクト名
+# ===============================
+# 自動的にディレクトリ名が使用される
+project_name: ''
+
+# ===============================
+# オプショナルツール
+# ===============================
+# 追加で有効化したいツールがある場合
+included_optional_tools: []

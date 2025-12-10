@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "outputStyle": "senior-engineer",
+  "env": {
+    "USE_DOCKER": "true",
+    "DOCKER_PROJECT": "your-project-name",
+    "MAX_THINKING_TOKENS": "10000",
+    "BASH_DEFAULT_TIMEOUT_MS": "60000",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+  },
+  "plansPath": ".claude/plans",
+  "sessionsPath": ".claude/sessions",
+  "fileHistoryPath": ".claude/file-history",
+  "outputStylesPath": ".claude/output-styles",
+  "skillsPath": ".claude/skills",
+  "agentsPath": ".claude/agents",
+  "designSystemPath": ".claude/design_system",
+  "docsPath": ".claude/docs",
+  "readmePath": ".claude/README.md",
+  "claudePath": ".claude",
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": ["docker", "make", "git"],
+    "allowUnsandboxedCommands": true,
+    "network": {
+      "allowLocalBinding": true,
+      "allowUnixSockets": []
+    }
+  },
+  "enableAllProjectMcpServers": true,
+  "permissions": {
+    "deny": [
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.kube/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./api-keys.json)",
+      "Read(./secrets.json)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "Read(./**/*.crt)",
+      "Read(./**/*.p12)",
+      "Read(./**/*.pfx)",
+      "Read(./node_modules/**)",
+      "Read(./.next/**)",
+      "Read(./out/**)",
+      "Read(./dist/**)",
+      "Read(./build/**)",
+      "Read(./coverage/**)",
+      "Read(./.cache/**)",
+      "Read(./.parcel-cache/**)",
+      "Read(./.nyc_output/**)",
+      "Read(./**/*.lcov)",
+      "Read(./postgres_data/**)",
+      "Read(./pgdata/**)",
+      "Read(./docker/postgres/data/**)",
+      "Read(./**/*.db)",
+      "Read(./**/*.db-journal)",
+      "Read(./**/*.log)",
+      "Read(./logs/**)",
+      "Read(./.git/**)",
+      "Read(./.pnpm-store/**)",
+      "Read(./package-lock.json)",
+      "Read(./yarn.lock)",
+      "Read(./pnpm-lock.yaml)",
+      "Read(./public/uploads/**)",
+      "Read(./uploads/**)",
+      "Read(./backups/**)",
+      "Read(./**/*.bak)",
+      "Read(./**/*.backup)",
+      "Read(./**/*.sql.gz)",
+      "Read(./tmp/**)",
+      "Read(./temp/**)",
+      "Read(./.DS_Store)",
+      "Read(./**/.DS_Store)",
+      "Read(./**/.AppleDouble)",
+      "Read(./**/.LSOverride)",
+      "Read(./**/._*)",
+      "Read(./**/Thumbs.db)",
+      "Read(./**/Desktop.ini)",
+      "Read(./**/ehthumbs.db)",
+      "Read(./**/*.swp)",
+      "Read(./**/*.swo)",
+      "Read(./**/*~)",
+      "Read(./**/*.iml)",
+      "Read(./**/*.iws)",
+      "Read(./**/*.tsbuildinfo)",
+      "Read(./next-env.d.ts)",
+      "Read(./.vercel/**)",
+      "Read(./docker-compose.prod.yml)",
+      "Read(./Dockerfile.prod)",
+      "Write(./.env)",
+      "Write(./.env.*)",
+      "Write(./secrets/**)",
+      "Write(./api-keys.json)",
+      "Write(./secrets.json)",
+      "Write(./**/*.pem)",
+      "Write(./**/*.key)",
+      "Write(./**/*.crt)",
+      "Write(./**/*.p12)",
+      "Write(./**/*.pfx)",
+      "Write(./backups/**)",
+      "Write(./.git/**)",
+      "Write(./node_modules/**)",
+      "Write(./.next/**)",
+      "Write(./dist/**)",
+      "Write(./build/**)",
+      "Write(./docker-compose.prod.yml)",
+      "Write(./Dockerfile.prod)"
+    ],
+    "allow": [
+      "Bash(make help:*)",
+      "Bash(make build:*)",
+      "Bash(make dev:*)",
+      "Bash(make test:*)",
+      "Bash(make lint:*)",
+      "Bash(make format:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker images:*)",
+      "Bash(docker inspect:*)",
+      "Bash(gh:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(git stash:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(echo:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)"
+    ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(make clean:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker stop:*)",
+      "Bash(docker rm:*)",
+      "Bash(docker restart:*)",
+      "Bash(docker volume rm:*)",
+      "Bash(docker system prune:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git rebase:*)",
+      "Bash(git push origin --delete:*)",
+      "Bash(sudo:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "cleanupPeriodDays": 30,
+  "includeCoAuthoredBy": true,
+  "hooks": {
+   "Notification": [
+     {
+       "hooks": [
+         {
+           "type": "command",
+           "command": "afplay /System/Library/Sounds/Glass.aiff"
+         }
+       ]
+     }
+   ],
+   "Stop": [
+     {
+       "hooks": [
+         {
+           "type": "command",
+           "command": "afplay /System/Library/Sounds/Funk.aiff"
+         }
+       ]
+     }
+   ],
+   "PostToolUse": [
+     {
+       "matcher": "Edit|Write|MultiEdit",
+       "hooks": [
+         {
+           "type": "command",
+           "command": "npm run format" // フォーマットなどのコマンド
+         }
+       ]
+     }
+   ]
+ }
+}

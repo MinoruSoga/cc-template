@@ -1,0 +1,86 @@
+{
+  "mcpServers": {
+    "serena": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "${PROJECT_ROOT}",
+        "--port",
+        "32123"
+      ],
+      "description": "セマンティックコード解析（TypeScript 336ファイルインデックス済み）",
+      "env": {
+        "SERENA_MAX_MEM": "1024",
+        "SERENA_MAX_WORKERS": "2"
+      }
+    },
+    "context7-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "description": "React/Next.js/TypeScriptドキュメント検索",
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=512"
+      }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "description": "E2Eテスト・ブラウザ自動化",
+      "env": {}
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "description": "ブラウザデバッグ・スクレイピング"
+    },
+    "sqlite": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "${PROJECT_ROOT}/database.db"
+      ],
+      "description": "SQLiteデータベース操作",
+      "env": {}
+    },
+    "figma-mcp": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3845/sse",
+      "description": "Figmaデザイン連携"
+    },
+    "cipher": {
+      "type": "stdio",
+      "command": "cipher",
+      "args": [
+        "--mode",
+        "mcp",
+        "--port",
+        "3001",
+        "--max-mem",
+        "512",
+        "--embedder",
+        "local"
+      ],
+      "disabled": false,
+      "description": "JewelryStock専用メモリエージェント（ポート3001）",
+      "env": {
+        "CIPHER_AGENT_CONFIG": "${PROJECT_ROOT}/cipher.yml",
+        "CIPHER_PORT": "3001",
+        "OLLAMA_BASE_URL": "${OLLAMA_BASE_URL}",
+        "VECTOR_STORE_TYPE": "${VECTOR_STORE_TYPE}",
+        "CIPHER_LOG_LEVEL": "${CIPHER_LOG_LEVEL}"
+      }
+    }
+  }
+}
