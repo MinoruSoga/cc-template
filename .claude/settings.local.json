@@ -1,17 +1,9 @@
 {
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "serena",
-    "context7-mcp",
-    "playwright",
-    "chrome-devtools",
-    "sqlite",
-    "figma-mcp",
-    "cipher"
-  ],
   "permissions": {
     "allow": [
-      "WebFetch(domain:zenn.dev)"
+      "WebFetch(domain:www.anthropic.com)",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__filesystem__list_directory"
     ]
   }
 }

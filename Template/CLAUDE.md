@@ -67,6 +67,24 @@
 
 ---
 
+## 🤖 エージェント構成
+
+| エージェント | モデル | 用途 |
+|-------------|--------|------|
+| `architect` | Opus | アーキテクチャ設計、セキュリティ監査 |
+| `implementer` | Sonnet | 機能実装、テスト作成 |
+| `reviewer` | Sonnet | コードレビュー、品質チェック |
+| `debugger` | Sonnet | バグ調査、エラー分析 |
+| `researcher` | Haiku | コード検索、ファイル探索 |
+| `formatter` | Haiku | コミット生成、コード整形 |
+| `prisma-expert` | Sonnet | DB設計、マイグレーション計画 |
+
+**使用方法:**
+- 自動委譲: 適切なタスクで自動的に呼び出される
+- 明示的: `Use the [agent] agent to...`
+
+---
+
 ## 📚 参照
 
 - [詳細規約があれば記載]
