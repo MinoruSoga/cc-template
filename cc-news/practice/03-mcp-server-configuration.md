@@ -20,7 +20,7 @@ Model Context Protocol (MCP) は、AIエージェントが外部ツールやサ�
 
 ```bash
 # プロジェクトスコープ（推奨）
-Template/.claude/.mcp.json
+Template/.mcp.json
 
 # ユーザースコープ
 ~/.claude.json
@@ -30,7 +30,7 @@ Template/.claude/.mcp.json
 
 ## 基本的な設定構造
 
-### プロジェクトスコープ（`Template/.claude/.mcp.json`）
+### プロジェクトスコープ（`Template/.mcp.json`）
 
 ```json
 {
@@ -63,7 +63,7 @@ Template/.claude/.mcp.json
 
 ### 例1: ファイルシステムサーバー
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -81,7 +81,7 @@ Template/.claude/.mcp.json
 
 ### 例2: GitHubサーバー
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -98,7 +98,7 @@ Template/.claude/.mcp.json
 
 ### 例3: PostgreSQLサーバー
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -115,7 +115,7 @@ Template/.claude/.mcp.json
 
 ### 例4: Puppeteer（ブラウザ自動化）
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -224,7 +224,7 @@ await server.connect(transport);
 
 ### ステップ3: 設定に追加
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -261,7 +261,7 @@ MCP: コードを実行して結果のみを取得
 GITHUB_TOKEN=your_token_here
 DATABASE_URL=postgres://user:pass@host/db
 
-# .claude/.mcp.json で参照
+# .mcp.json で参照（プロジェクトルート）
 {
   "mcpServers": {
     "github": {
@@ -331,7 +331,7 @@ echo $GITHUB_TOKEN
 
 ### 接続タイムアウト
 
-`Template/.claude/.mcp.json`:
+`Template/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -357,8 +357,8 @@ echo $GITHUB_TOKEN
 
 ```
 Template/
+├── .mcp.json               # MCP サーバー設定（プロジェクトルート）
 ├── .claude/
-│   ├── .mcp.json           # MCP サーバー設定
 │   ├── settings.json       # その他の設定
 │   └── ...
 └── ...
@@ -366,7 +366,7 @@ Template/
 
 ## チェックリスト
 
-- [ ] `Template/.claude/.mcp.json` が作成されている
+- [ ] `Template/.mcp.json` が作成されている
 - [ ] MCPサーバーのコマンドが正しい
 - [ ] 環境変数が設定されている（`.env` ファイル）
 - [ ] `.env` が `.gitignore` に追加されている

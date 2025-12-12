@@ -306,6 +306,8 @@ API_SECRET=secret_key_here
 }
 ```
 
+**終了コードについて**: Hookスクリプトは終了コード `2` でツール実行をブロックできます。詳細は[Hooks設定ガイド](./06-hooks-configuration.md)を参照。
+
 ## Web版 Claude Code
 
 ### クラウドサンドボックスの利点

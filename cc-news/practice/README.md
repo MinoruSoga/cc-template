@@ -6,11 +6,11 @@
 
 ```
 Template/                       # プロジェクトテンプレート（コピーして使用）
+├── .mcp.json                  # MCPサーバー設定（プロジェクトルート）
 ├── .claude/
 │   ├── CLAUDE.md              # プロジェクト固有の指示
 │   ├── settings.json          # Claude Code設定
 │   ├── settings.local.json    # ローカル設定（gitignore）
-│   ├── .mcp.json              # MCPサーバー設定
 │   ├── commands/              # カスタムスラッシュコマンド
 │   │   ├── review.md
 │   │   └── deploy.md
