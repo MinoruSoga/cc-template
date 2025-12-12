@@ -33,6 +33,30 @@
         "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
         "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
       }
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "${PROJECT_ROOT}"
+      ],
+      "env": {
+        "SERENA_MAX_MEM": "1024",
+        "SERENA_MAX_WORKERS": "2"
+      }
+    },
+    "context7-mcp": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=512"
+      }
     }
   }
 }

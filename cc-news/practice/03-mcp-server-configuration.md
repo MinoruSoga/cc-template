@@ -345,13 +345,206 @@ echo $GITHUB_TOKEN
 
 ## 推奨MCPサーバー一覧
 
-| サーバー | 用途 | パッケージ |
-|----------|------|------------|
-| Filesystem | ファイル操作 | @modelcontextprotocol/server-filesystem |
-| GitHub | GitHub連携 | @modelcontextprotocol/server-github |
-| PostgreSQL | DB操作 | @modelcontextprotocol/server-postgres |
-| Puppeteer | ブラウザ自動化 | @modelcontextprotocol/server-puppeteer |
-| Slack | Slack連携 | @modelcontextprotocol/server-slack |
+### 公式サーバー（Anthropic）
+
+#### Filesystem
+ローカルファイルシステムへの安全なアクセスを提供。ファイルの読み書き、ディレクトリ操作、ファイル検索が可能。許可されたディレクトリのみにアクセスを制限できる。
+
+| パッケージ | @modelcontextprotocol/server-filesystem |
+|-----------|----------------------------------------|
+
+#### GitHub
+GitHub API のラッパー。リポジトリの操作、Issue/PR の作成・管理、コード検索、ブランチ操作などを AI から直接実行可能。CI/CD ワークフローの自動化にも活用できる。
+
+| パッケージ | @modelcontextprotocol/server-github |
+|-----------|-------------------------------------|
+
+#### PostgreSQL
+PostgreSQL データベースへの接続を提供。SQL クエリの実行、スキーマ情報の取得、データの CRUD 操作が可能。AI によるデータ分析やレポート生成に活用できる。
+
+| パッケージ | @modelcontextprotocol/server-postgres |
+|-----------|--------------------------------------|
+
+#### Puppeteer
+Headless Chrome/Chromium を制御するブラウザ自動化ツール。Web スクレイピング、スクリーンショット取得、PDF 生成、フォーム操作、E2E テストの実行が可能。
+
+| パッケージ | @modelcontextprotocol/server-puppeteer |
+|-----------|---------------------------------------|
+
+#### Slack
+Slack API との連携を提供。メッセージの送受信、チャンネル操作、ユーザー情報の取得、ファイルアップロードが可能。チーム通知やボット機能の実装に活用できる。
+
+| パッケージ | @modelcontextprotocol/server-slack |
+|-----------|-----------------------------------|
+
+### コミュニティサーバー（推奨）
+
+#### Serena
+LSP（Language Server Protocol）ベースのセマンティックコード解析ツール。IDE と同等の「定義へジャンプ」「参照検索」「シンボル検索」機能を AI に提供。9言語（Python, Java, TypeScript, Ruby, Go, C#, Clojure, Elixir, Terraform）に対応。Microsoft/GitHub がスポンサー。
+
+| パッケージ | git+https://github.com/oraios/serena |
+|-----------|-------------------------------------|
+
+#### Context7
+任意のライブラリ・フレームワークの最新ドキュメントをリアルタイムで取得。AI の知識カットオフを超えた最新情報にアクセス可能。4.5M ダウンロード、GitHub 39K スター。プロンプトに「use context7」と書くだけで使用可能。
+
+| パッケージ | @upstash/context7-mcp |
+|-----------|----------------------|
+
+### Serena 設定例
+
+```json
+{
+  "mcpServers": {
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from", "git+https://github.com/oraios/serena",
+        "serena", "start-mcp-server",
+        "--context", "ide-assistant",
+        "--project", "${PROJECT_ROOT}"
+      ],
+      "env": {
+        "SERENA_MAX_MEM": "1024",
+        "SERENA_MAX_WORKERS": "2"
+      }
+    }
+  }
+}
+```
+
+**対応言語**: Python, Java, TypeScript, Ruby, Go, C#, Clojure, Elixir, Terraform
+
+**機能**:
+- Go to Definition（定義へジャンプ）
+- Find References（参照検索）
+- セマンティック検索
+- シンボル検索
+
+### Context7 設定例
+
+```json
+{
+  "mcpServers": {
+    "context7-mcp": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=512"
+      }
+    }
+  }
+}
+```
+
+**使い方**: プロンプトに「use context7」と書くだけで、任意のライブラリの最新ドキュメントを取得
+
+**例**:
+- 「Next.js 15のApp Routerについて教えて use context7」
+- 「Prismaのリレーション設定 use context7」
+
+### その他の人気サーバー（用途別）
+
+#### ブラウザ自動化
+
+**Playwright** (12K+ Stars)
+Microsoft 製のブラウザ自動化フレームワーク。Chromium、Firefox、WebKit の3エンジンに対応。Puppeteer より高機能で、自動待機、ネットワークインターセプト、モバイルエミュレーション、複数タブ/ブラウザの同時制御が可能。E2E テストのデファクトスタンダード。
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-playwright"]
+    }
+  }
+}
+```
+
+**Browser Tools**
+Web 開発に特化したブラウザデバッグツール群。DOM インスペクション、ネットワーク監視、コンソールログ取得、パフォーマンス計測などフロントエンド開発に必要な機能を提供。
+
+#### コンテナ・インフラ
+
+**Docker**
+Docker Engine との連携を提供。コンテナの起動・停止・ログ取得、イメージのビルド・プル、ボリューム/ネットワーク管理が可能。AI によるインフラ運用自動化に活用。
+
+```json
+{
+  "mcpServers": {
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"]
+    }
+  }
+}
+```
+
+**AWS (Bedrock AgentCore)**
+AWS サービス群との統合を提供。Bedrock エコシステムの中核として、マルチエージェント間のコンテキスト管理、セッション記憶、アクション割り当てを担当。
+
+#### プロダクティビティ
+
+**Notion**
+Notion API との連携を提供。ページ・データベースの作成・編集・検索、ブロック操作、コメント管理が可能。AI によるナレッジベース構築・ドキュメント自動生成に活用。
+
+**GSuite**
+Google Workspace（Gmail、Drive、Docs、Sheets、Calendar）との連携。ドキュメント作成・編集、スプレッドシート操作、メール送受信、カレンダー管理を AI から実行可能。
+
+**Figma**
+Figma API との連携を提供。デザインファイルの読み取り、コンポーネント情報取得、スタイル抽出が可能。デザインシステムの文書化やコード生成の自動化に活用。
+
+#### ワークフロー自動化
+
+**Zapier**
+5000以上のアプリを連携するノーコード自動化プラットフォーム。トリガーとアクションを組み合わせたワークフロー（Zap）を AI から作成・実行可能。
+
+**n8n**
+オープンソースのワークフロー自動化ツール。セルフホスト可能で、400以上のアプリ統合、カスタムコード実行、Webhook 対応。AI エージェントからのワークフロートリガーに対応。
+
+#### データ・AI
+
+**Qdrant**
+高性能ベクトル類似検索エンジン。AI エージェントのセマンティック記憶として機能し、過去の会話や関連ドキュメントを即座に検索。RAG（Retrieval-Augmented Generation）構築に最適。
+
+**Chroma**
+埋め込みベクトルデータベース。ドキュメントの保存・検索・フィルタリングを提供。LangChain/LlamaIndex との統合が容易で、AI アプリケーションのコンテキスト管理に活用。
+
+**Jupyter**
+Jupyter Notebook/Lab との連携。ノートブックの作成・実行、セル操作、カーネル管理が可能。データ分析・可視化・機械学習ワークフローを AI から制御。
+
+#### コミュニケーション
+
+**WhatsApp**
+WhatsApp Business API との連携。メッセージの送受信、チャット管理、メディアファイル送信が可能。カスタマーサポートやマーケティング自動化に活用。
+
+**Discord**
+Discord Bot API との連携。メッセージ送受信、サーバー/チャンネル管理、ユーザー情報取得、リアクション操作が可能。コミュニティ管理やボット機能の実装に活用。
+
+### MCP サーバー選定ガイド
+
+```
+基本構成（Template推奨）:
+├── filesystem    # ファイル操作
+├── github        # GitHub連携
+├── puppeteer     # ブラウザ自動化（または playwright）
+├── postgres      # DB操作
+├── slack         # チーム連携
+├── serena        # コード解析
+└── context7-mcp  # ドキュメント検索
+
+プロジェクト固有で追加:
+├── notion        # ドキュメント管理が必要な場合
+├── docker        # コンテナ運用がある場合
+├── figma         # デザインチームと協業する場合
+└── qdrant/chroma # RAG/AI検索を構築する場合
+```
+
+### リソース
+
+- [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) - 全サーバー一覧
+- [MCPMarket Leaderboard](https://mcpmarket.com/leaderboards) - GitHub Stars ランキング
+- [Docker MCP Toolkit](https://www.docker.com/blog/top-mcp-servers-2025/) - セキュアな MCP 運用
 
 ## ディレクトリ構成
 
