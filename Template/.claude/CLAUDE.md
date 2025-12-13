@@ -56,6 +56,75 @@ src/
 
 ---
 
+## 📝 命名規則
+
+| 対象 | 規則 | 例 |
+|------|------|-----|
+| コンポーネント | PascalCase | `UserProfile`, `TaskList` |
+| 関数・変数 | camelCase | `getUserById`, `isActive` |
+| 定数 | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT`, `API_BASE_URL` |
+| ファイル | kebab-case | `user-profile.tsx`, `api-client.ts` |
+| 型・インターフェース | PascalCase | `UserData`, `ApiResponse` |
+| Enum | PascalCase (値もPascalCase) | `Status.InProgress` |
+
+---
+
+## 🔐 環境変数
+
+必要な環境変数は `.env.example` を参照してください。
+
+```bash
+# .env.example からコピーして設定
+cp .env.example .env
+
+# 必須の環境変数
+DATABASE_URL=          # PostgreSQL接続文字列
+GITHUB_TOKEN=          # GitHub Personal Access Token
+```
+
+**注意:** `.env` ファイルは `.gitignore` に含まれています。
+
+---
+
+## 📐 重要なパターン
+
+### API呼び出し
+```typescript
+// 共通のAPIクライアントを使用
+const response = await api.get<UserData>('/users/:id', { id });
+if (!response.ok) {
+  throw new ApiError(response.error);
+}
+return response.data;
+```
+
+### エラーハンドリング
+```typescript
+// Result型でエラーを明示的に扱う
+type Result<T, E = Error> = { ok: true; data: T } | { ok: false; error: E };
+
+const result = await fetchUser(id);
+if (!result.ok) {
+  logger.error('Failed to fetch user', { error: result.error });
+  return null;
+}
+```
+
+### コンポーネント構造
+```typescript
+// Props型を明示的に定義
+interface UserCardProps {
+  user: User;
+  onSelect?: (id: string) => void;
+}
+
+export const UserCard: FC<UserCardProps> = ({ user, onSelect }) => {
+  // 実装
+};
+```
+
+---
+
 ## ⚡ 禁止事項
 
 - ❌ any型使用
