@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:zenn.dev)",
+      "mcp__fetch__fetch",
+      "WebSearch",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_evaluate"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "serena",
+    "context7-mcp",
+    "chrome-devtools",
+    "cipher",
+    "puppeteer"
+  ]
+}
