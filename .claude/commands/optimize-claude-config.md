@@ -4,6 +4,8 @@
 
 > 未指定の場合は現在のディレクトリを使用
 
+**重要: この指示書を読んだら、Phase 1から順に実行を開始してください。指示書の表示だけで終わらず、実際にプロジェクトを分析してファイルを生成してください。**
+
 ## 概要
 
 このコマンドは、対象プロジェクトを分析し、最適なClaude設定ファイルを自動生成します。
@@ -79,24 +81,32 @@
 確認後、以下の順序で生成:
 
 1. **CLAUDE.md** - プロジェクト指示書
-   - テンプレート: `/Users/minoru/Dev/cc/cc-news/Template/.claude/CLAUDE.md`
-   - ガイド: `/Users/minoru/Dev/cc/cc-news/practice/01-claude-md-configuration.md`
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/CLAUDE.md`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/`
 
 2. **settings.json** - 権限・サンドボックス設定
-   - テンプレート: `/Users/minoru/Dev/cc/cc-news/Template/.claude/settings.json`
-   - ガイド: `/Users/minoru/Dev/cc/cc-news/practice/04-security-configuration.md`
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/settings.json`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/10-security.md`
 
 3. **.mcp.json** - MCPサーバー設定
-   - テンプレート: `/Users/minoru/Dev/cc/cc-news/Template/.mcp.json`
-   - ガイド: `/Users/minoru/Dev/cc/cc-news/practice/03-mcp-server-configuration.md`
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.mcp.json`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/07-mcp-integration.md`
 
 4. **commands/** - カスタムコマンド
-   - テンプレート: `/Users/minoru/Dev/cc/cc-news/Template/.claude/commands/`
-   - ガイド: `/Users/minoru/Dev/cc/cc-news/practice/05-custom-commands.md`
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/commands/`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/`
 
 5. **skills/** - Agent Skills
-   - テンプレート: `/Users/minoru/Dev/cc/cc-news/Template/.claude/skills/`
-   - ガイド: `/Users/minoru/Dev/cc/cc-news/practice/02-agent-skills-setup.md`
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/skills/`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/`
+
+6. **hooks/** - フックスクリプト
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/hooks/`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/`
+
+7. **agents/** - サブエージェント定義
+   - テンプレート: `/Users/minoru/Dev/cc/Template/.claude/agents/`
+   - ガイド: `/Users/minoru/Dev/cc/Template/.claude/docs/13-agent-design-patterns.md`
 
 ## 技術スタック別設定
 

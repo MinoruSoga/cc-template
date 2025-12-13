@@ -25,7 +25,7 @@
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
-    "excludedCommands": ["docker", "make", "git"],
+    "excludedCommands": ["docker", "docker-compose", "make", "git"],
     "allowUnsandboxedCommands": true,
     "network": {
       "allowLocalBinding": true,
@@ -42,9 +42,13 @@
       "Bash(node:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
+      "Bash(rm -rf:*)",
+      "Bash(*|bash:*)",
+      "Bash(*|sh:*)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "Read(~/.kube/**)",
+      "Read(~/.gnupg/**)",
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)",
@@ -62,73 +66,22 @@
       "Read(./build/**)",
       "Read(./coverage/**)",
       "Read(./.cache/**)",
-      "Read(./.parcel-cache/**)",
-      "Read(./.nyc_output/**)",
-      "Read(./**/*.lcov)",
-      "Read(./postgres_data/**)",
-      "Read(./pgdata/**)",
-      "Read(./docker/postgres/data/**)",
       "Read(./**/*.db)",
-      "Read(./**/*.db-journal)",
       "Read(./**/*.log)",
       "Read(./logs/**)",
       "Read(./.git/**)",
-      "Read(./.pnpm-store/**)",
-      "Read(./package-lock.json)",
-      "Read(./yarn.lock)",
-      "Read(./pnpm-lock.yaml)",
-      "Read(./public/uploads/**)",
-      "Read(./uploads/**)",
-      "Read(./backups/**)",
-      "Read(./**/*.bak)",
-      "Read(./**/*.backup)",
-      "Read(./**/*.sql.gz)",
       "Read(./tmp/**)",
       "Read(./temp/**)",
-      "Read(./.DS_Store)",
-      "Read(./**/.DS_Store)",
-      "Read(./**/.AppleDouble)",
-      "Read(./**/.LSOverride)",
-      "Read(./**/._*)",
-      "Read(./**/Thumbs.db)",
-      "Read(./**/Desktop.ini)",
-      "Read(./**/ehthumbs.db)",
-      "Read(./**/*.swp)",
-      "Read(./**/*.swo)",
-      "Read(./**/*~)",
-      "Read(./**/*.iml)",
-      "Read(./**/*.iws)",
-      "Read(./**/*.tsbuildinfo)",
-      "Read(./next-env.d.ts)",
-      "Read(./.vercel/**)",
-      "Read(./docker-compose.prod.yml)",
-      "Read(./Dockerfile.prod)",
       "Write(./.env)",
       "Write(./.env.*)",
       "Write(./secrets/**)",
-      "Write(./api-keys.json)",
-      "Write(./secrets.json)",
       "Write(./**/*.pem)",
       "Write(./**/*.key)",
-      "Write(./**/*.crt)",
-      "Write(./**/*.p12)",
-      "Write(./**/*.pfx)",
-      "Write(./backups/**)",
       "Write(./.git/**)",
-      "Write(./node_modules/**)",
-      "Write(./.next/**)",
-      "Write(./dist/**)",
-      "Write(./build/**)",
-      "Write(./docker-compose.prod.yml)",
-      "Write(./Dockerfile.prod)"
+      "Write(./node_modules/**)"
     ],
     "allow": [
-      "Bash(make help:*)",
-      "Bash(make build:*)",
-      "Bash(make dev:*)",
-      "Bash(make test:*)",
-      "Bash(make lint:*)",
-      "Bash(make format:*)",
+      "Bash(make:*)",
       "Bash(docker ps:*)",
       "Bash(docker logs:*)",
       "Bash(docker images:*)",
@@ -136,6 +89,7 @@
       "Bash(gh:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
+      "Bash(git status:*)",
       "Bash(git branch:*)",
       "Bash(git show:*)",
       "Bash(git stash:*)",
@@ -147,7 +101,13 @@
       "Bash(tail:*)",
       "Bash(wc:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Read(src/**)",
+      "Read(public/**)",
+      "Read(tests/**)",
+      "Read(docs/**)",
+      "Write(src/**)",
+      "Write(tests/**)"
     ],
     "ask": [
       "Bash(rm:*)",
@@ -169,16 +129,69 @@
   "cleanupPeriodDays": 30,
   "includeCoAuthoredBy": true,
   "hooks": {
-   "PostToolUse": [
-     {
-       "matcher": "Edit|Write|MultiEdit",
-       "hooks": [
-         {
-           "type": "command",
-           "command": "npm run format" // フォーマットなどのコマンド
-         }
-       ]
-     }
-   ]
- }
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-dangerous.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/log-commands.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-format.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify-slack.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-init.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/cleanup.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,0 +1,57 @@
+{
+  "project": "[プロジェクト名]",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-01",
+  "features": [
+    {
+      "id": "SETUP-001",
+      "name": "プロジェクト初期設定",
+      "description": "開発環境のセットアップと基本構成",
+      "status": "failing",
+      "priority": "high",
+      "dependencies": [],
+      "commit": null,
+      "completedAt": null
+    },
+    {
+      "id": "AUTH-001",
+      "name": "ユーザー認証",
+      "description": "メールとパスワードによるログイン機能",
+      "status": "failing",
+      "priority": "high",
+      "dependencies": ["SETUP-001"],
+      "commit": null,
+      "completedAt": null
+    },
+    {
+      "id": "AUTH-002",
+      "name": "セッション管理",
+      "description": "JWTによるセッション管理",
+      "status": "failing",
+      "priority": "high",
+      "dependencies": ["AUTH-001"],
+      "commit": null,
+      "completedAt": null
+    },
+    {
+      "id": "API-001",
+      "name": "ユーザーAPI",
+      "description": "ユーザーCRUD操作のAPIエンドポイント",
+      "status": "failing",
+      "priority": "medium",
+      "dependencies": ["AUTH-001"],
+      "commit": null,
+      "completedAt": null
+    },
+    {
+      "id": "UI-001",
+      "name": "基本UIコンポーネント",
+      "description": "共通UIコンポーネントライブラリ",
+      "status": "failing",
+      "priority": "medium",
+      "dependencies": ["SETUP-001"],
+      "commit": null,
+      "completedAt": null
+    }
+  ]
+}

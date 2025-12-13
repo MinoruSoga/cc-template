@@ -2,6 +2,18 @@
 
 任意のプロジェクトに対して最適なClaude設定を自動生成するスラッシュコマンド集です。
 
+## 目次
+
+- [使い方](#使い方)
+- [コマンド一覧](#コマンド一覧)
+- [生成されるファイル](#生成されるファイル)
+- [処理フロー](#処理フロー)
+- [対応技術スタック](#対応技術スタック)
+- [参照ドキュメント](#参照ドキュメント)
+- [注意事項](#注意事項)
+- [別プロジェクトへの適用方法](#別プロジェクトへの適用方法)
+- [例](#例)
+
 ## 使い方
 
 ### 1. ccディレクトリでClaude Codeを起動
@@ -101,10 +113,12 @@ claude
 
 ## 参照ドキュメント
 
-生成時は以下のベストプラクティスを参照:
+生成時は以下のテンプレート・ベストプラクティスを参照:
 
-- `/Users/minoru/Dev/cc/cc-news/Template/` - テンプレート
-- `/Users/minoru/Dev/cc/cc-news/practice/` - 実践ガイド
+- `/Users/minoru/Dev/cc/Template/` - **完全版テンプレート**
+- `/Users/minoru/Dev/cc/Template/.claude/docs/` - ベストプラクティス
+- `/Users/minoru/Dev/cc/cc-news/` - 参考: 最新トピック
+- `/Users/minoru/Dev/cc/cc-blog/` - 参考: 設計思想
 
 ## 注意事項
 
@@ -112,6 +126,38 @@ claude
 - セキュリティ設定（deny）は既存を優先します
 - 生成前に必ずプレビューを表示します
 - 破壊的変更は行いません
+
+## 別プロジェクトへの適用方法
+
+### 方法1: パス引数で指定（推奨）
+
+ccディレクトリからパスを引数として渡す方法です。
+
+```bash
+cd /Users/minoru/Dev/cc
+claude
+
+# Claude Code内で
+/optimize-claude-config /path/to/target-project
+```
+
+### 方法2: コマンドをコピー
+
+対象プロジェクトにコマンドをコピーして、そこで実行する方法です。
+
+```bash
+# コマンドをコピー
+cp -r /Users/minoru/Dev/cc/.claude/commands /path/to/target-project/.claude/
+
+# 対象プロジェクトでClaude Codeを起動
+cd /path/to/target-project
+claude
+
+# Claude Code内で
+/optimize-claude-config
+```
+
+この方法は、対象プロジェクトでも継続的にコマンドを使いたい場合に便利です。
 
 ## 例
 
