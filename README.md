@@ -29,13 +29,13 @@ Claude Code の設定テンプレート・ドキュメント・ベストプラ�
 │   ├── .mcp.json              # MCP設定テンプレート
 │   └── README.md              # テンプレート使用ガイド
 │
-├── cc-blog/                    # 参考: 理論・設計思想
-│   ├── *.md                   # ブログ記事翻訳
+├── cc-blog/                    # 参考: Anthropic公式ブログ翻訳
+│   ├── *.md                   # エージェント設計、ツール設計等
 │   ├── practice/              # 実践ガイド
 │   └── Sample/                # サンプル設定
 │
-├── cc-news/                    # 参考: 最新ベストプラクティス
-│   ├── *.md                   # トピックドキュメント
+├── cc-news/                    # 参考: Claude Code最新情報
+│   ├── *.md                   # セキュリティ、MCP、SDK等
 │   ├── practice/              # 実践ガイド
 │   └── Sample/                # サンプル設定
 │
@@ -95,6 +95,8 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 
 ## 📖 ドキュメント
 
+### 基本ガイド
+
 | ファイル | 内容 |
 |---------|------|
 | [01_mcp-setup.md](./01_mcp-setup.md) | MCP サーバーの設定・管理方法 |
@@ -102,6 +104,14 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 | [03_commands-shortcuts.md](./03_commands-shortcuts.md) | コマンド・ショートカット一覧 |
 | [04_file-structure.md](./04_file-structure.md) | ファイル・ディレクトリ構成 |
 | [05_tips-tricks.md](./05_tips-tricks.md) | 便利な使い方・Tips |
+
+### 参考ドキュメント
+
+| フォルダ | 内容 |
+|---------|------|
+| [cc-blog/](./cc-blog/) | Anthropic公式ブログ翻訳（エージェント設計パターン、ツール設計、マルチエージェント等） |
+| [cc-news/](./cc-news/) | Claude Code最新情報（セキュリティ、MCP連携、SDK、長時間タスク管理等） |
+| [Template/.claude/docs/](./Template/.claude/docs/) | 詳細なベストプラクティス（17ファイル） |
 
 ---
 
