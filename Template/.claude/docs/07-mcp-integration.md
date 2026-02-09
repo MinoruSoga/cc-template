@@ -19,8 +19,9 @@
 claude mcp add --transport http notion https://mcp.notion.com/mcp
 ```
 
-### リモートSSEサーバー
+### リモートSSEサーバー（非推奨 → HTTP Streamable Transport を推奨）
 ```bash
+# SSE は非推奨。新規サーバーは HTTP Streamable Transport を使用してください。
 claude mcp add --transport sse asana https://mcp.asana.com/sse
 ```
 
@@ -62,8 +63,8 @@ claude mcp add --transport stdio airtable --env AIRTABLE_API_KEY=YOUR_KEY \
       }
     },
     "figma": {
-      "type": "sse",
-      "url": "http://localhost:3845/sse"
+      "type": "http",
+      "url": "http://localhost:3845/mcp"
     }
   }
 }
@@ -293,3 +294,31 @@ npx @anthropic-ai/mcpb pack
 - **クロスプラットフォーム**: Windows、macOS、Linux対応
 - **動的設定**: `${__dirname}`, `${user_config.key}`, `${HOME}` テンプレート
 - **機能宣言**: tools、prompts のマニフェスト宣言
+
+---
+
+## OAuth サポート
+
+MCP サーバーが OAuth 認証をサポートしている場合、Claude Code は自動的に OAuth フローを処理します。
+
+---
+
+## 環境変数
+
+| 変数 | 説明 | デフォルト |
+|------|------|-----------|
+| `MCP_TIMEOUT` | MCP サーバーへの接続タイムアウト（ミリ秒） | `30000` |
+| `MAX_MCP_OUTPUT_TOKENS` | MCP ツール出力の最大トークン数 | `25000` |
+
+---
+
+## Tool Search（ENABLE_TOOL_SEARCH）
+
+多数の MCP ツールがある場合、Tool Search を有効にしてトークン効率を改善できます：
+
+```bash
+# .env に追加
+ENABLE_TOOL_SEARCH=auto:5  # 5件以上のツールを自動で遅延ロード
+```
+
+Tool Search を有効にすると、ツール定義は初回ロード時にはメタデータのみ保持され、実際に使用される際にフル定義がロードされます。

@@ -2,7 +2,7 @@
 
 フックは特定のイベント発生時に自動実行されるシェルコマンドです。設定は `settings.json` の `hooks` セクションで定義します。
 
-## 10種類のフックイベント
+## フックイベント一覧
 
 | フック名 | 発火タイミング | 用途例 |
 |---------|---------------|--------|
@@ -13,6 +13,8 @@
 | **Notification** | 通知送信時 | カスタム通知処理 |
 | **Stop** | メインエージェント停止時 | 追加作業の要求 |
 | **SubagentStop** | サブエージェント停止時 | サブタスク完了処理 |
+| **SubagentStart** | サブエージェント開始時 | 初期化処理 |
+| **TaskCompleted** | タスク完了時 | 完了通知、後処理 |
 | **SessionStart** | セッション開始時 | 環境変数設定、依存関係チェック |
 | **SessionEnd** | セッション終了時 | クリーンアップ処理 |
 | **PreCompact** | コンテキスト圧縮前 | 圧縮前の処理 |
@@ -41,7 +43,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npm run format -- \"$CLAUDE_PROJECT_DIR\""
+            "command": "npm run format -- \"$CLAUDE_PROJECT_DIR\"",
+            "async": true
           }
         ]
       }
@@ -152,4 +155,37 @@ exit 0
 # .claude/hooks/log-commands.sh
 echo "[$(date)] $CLAUDE_TOOL_NAME: $CLAUDE_TOOL_INPUT" >> ~/.claude/command.log
 exit 0
+```
+
+---
+
+## フックタイプ
+
+| タイプ | 説明 |
+|--------|------|
+| `command` | シェルコマンドを実行 |
+| `prompt` | プロンプトとしてコンテキストを注入 |
+| `agent` | サブエージェントを起動して処理を委譲 |
+
+---
+
+## 非同期フック
+
+`"async": true` を指定すると、フックがバックグラウンドで実行され、メイン処理をブロックしません。ログ記録や通知など、結果を待つ必要がない処理に適しています。
+
+```json
+{
+  "type": "command",
+  "command": "notify-slack.sh",
+  "async": true
+}
+```
+
+---
+
+## フック管理コマンド
+
+```bash
+# 現在のフック設定を確認
+/hooks
 ```

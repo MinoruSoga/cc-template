@@ -129,6 +129,55 @@
 
 ## その他の重要な設定
 
+### Extended Thinking
+```json
+{
+  "alwaysThinkingEnabled": true
+}
+```
+Extended Thinking を常時有効化。従来の `env.MAX_THINKING_TOKENS` より推奨。
+
+### .gitignore 準拠
+```json
+{
+  "respectGitignore": true
+}
+```
+`.gitignore` に記載されたファイルをツールのファイル検索から除外。
+
+### Attribution（コミット帰属表示）
+```json
+{
+  "attribution": {
+    "enabled": true,
+    "format": "Co-Authored-By: Claude <noreply@anthropic.com>"
+  }
+}
+```
+従来の `includeCoAuthoredBy` の後継。コミットやPRへの帰属表示を制御。
+
+### ネットワークサンドボックス
+```json
+{
+  "sandbox": {
+    "network": {
+      "allowLocalBinding": true,
+      "allowUnixSockets": [],
+      "allowedDomains": ["api.example.com"]
+    }
+  }
+}
+```
+`allowedDomains` でサンドボックス内からアクセス可能なドメインを制限。
+
+### クリーンアップ期間
+```json
+{
+  "cleanupPeriodDays": 30
+}
+```
+セッションファイルやログの自動クリーンアップ間隔（日数）。
+
 ### モデル指定
 ```json
 {

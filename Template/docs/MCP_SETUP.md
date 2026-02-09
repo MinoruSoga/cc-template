@@ -12,7 +12,6 @@
   - [Chrome DevTools MCP](#chrome-devtools-mcp)
   - [SQLite MCP](#sqlite-mcp)
   - [Figma MCP](#figma-mcp)
-  - [Cipher MCP](#cipher-mcp)
 - [トラブルシューティング](#トラブルシューティング)
 - [FAQ](#faq)
 
@@ -76,7 +75,7 @@ cp .mcp.local.json.example .mcp.local.json
 #### 4. Claude Codeを起動
 
 ```bash
-claude code
+claude
 ```
 
 #### 5. MCPサーバーの動作確認
@@ -87,14 +86,13 @@ Claude Code内で以下を実行：
 利用可能なMCPツールを確認してください
 ```
 
-正常に動作している場合、以下のサーバーが表示されます：
+正常に動作している場合、設定済みのサーバーが表示されます：
 - `serena` - セマンティックコード解析
-- `context7-mcp` - React/Next.js/TypeScriptドキュメント検索
+- `context7-mcp` - ライブラリドキュメント検索
 - `playwright` - E2Eテスト・ブラウザ自動化
 - `chrome-devtools` - ブラウザデバッグ・スクレイピング
 - `sqlite` - SQLiteデータベース操作
 - `figma-mcp` - Figmaデザイン連携
-- `cipher` - メモリエージェント
 
 ---
 
@@ -102,7 +100,7 @@ Claude Code内で以下を実行：
 
 ### Serena MCP
 
-**機能:** セマンティックコード解析ツール（TypeScriptファイルのインデックス化対応）
+**機能:** セマンティックコード解析ツール（シンボル検索・リファクタリング支援）
 
 **必要な設定:**
 - Python 3.8以上
@@ -117,7 +115,7 @@ Claude Code内で以下を実行：
 プロジェクトごとにSerenaの動作をカスタマイズできます：
 
 ```yaml
-# 対応言語
+# 対応言語（プロジェクトに合わせて設定）
 languages:
   - typescript
 
@@ -130,7 +128,6 @@ ignore_all_files_in_gitignore: true
 # 追加の除外パス
 ignored_paths:
   - 'node_modules/'
-  - '.next/'
   - 'dist/'
   - 'coverage/'
   - '*.test.ts'
@@ -144,7 +141,7 @@ read_only: false
 
 | 設定 | 説明 | デフォルト |
 |------|------|----------|
-| `languages` | 解析対象言語 | `['typescript']` |
+| `languages` | 解析対象言語 | プロジェクトに合わせて設定 |
 | `encoding` | ファイルエンコーディング | `utf-8` |
 | `ignore_all_files_in_gitignore` | .gitignore連携 | `true` |
 | `ignored_paths` | 除外パス（パフォーマンス向上） | 多数 |
@@ -167,7 +164,7 @@ read_only: false
 **使用方法:**
 
 ```
-RenewalAppHeader.tsxのシンボル概要を取得してください
+MyComponent.tsxのシンボル概要を取得してください
 ```
 
 **注意事項:**
@@ -179,7 +176,7 @@ RenewalAppHeader.tsxのシンボル概要を取得してください
 
 ### Context7 MCP
 
-**機能:** React/Next.js/TypeScript等のライブラリドキュメントをリアルタイム検索
+**機能:** ライブラリドキュメントをリアルタイム検索
 
 **必要な設定:**
 - Node.js 18以上
@@ -198,7 +195,7 @@ RenewalAppHeader.tsxのシンボル概要を取得してください
 **使用方法:**
 
 ```
-Next.js 14のApp Routerの使い方を教えてください
+React の useEffect の使い方を教えてください
 ```
 
 **注意事項:**
@@ -327,161 +324,39 @@ database.dbのテーブル一覧を表示してください
 
 1. Figma Desktopアプリを起動
 2. 対象のデザインファイルを開く
-   - ファイル名: **案内所**
-   - URL: https://www.figma.com/design/MH84ymDifyB02x92eBzn80/案内所
 3. Claude Codeでコマンドを実行
 
 ```
-Figmaのノード19:178（HomeCategorySelect）からReactコンポーネントを作成してください
+FigmaのノードID（例: 19:178）からReactコンポーネントを作成してください
 ```
-
-詳細は [`docs/figma-mcp-usage-guide.md`](./figma-mcp-usage-guide.md) を参照。
-
----
-
-### Cipher MCP
-
-**機能:** メモリエージェント - 知識蓄積・セッション管理・過去の会話検索
-
-**必要な設定:**
-- Node.js 18以上
-- Cipherコマンドがインストール済み
-- Ollama（埋め込みモデル用）
-- オプション: OpenAI API（ハイブリッド構成の場合）
-
-**構成オプション:**
-
-Cipher MCPは2つの構成から選択可能：
-
-| 構成 | LLM | 埋め込み | コスト | プライバシー | 推奨環境 |
-|------|-----|---------|--------|------------|----------|
-| **完全ローカル** 🏆 | Ollama | Ollama | 無料 | 完全ローカル | マルチエージェント |
-| **ハイブリッド** | OpenAI | Ollama | 有料 | 部分クラウド | 高品質会話重視 |
-
-#### 完全ローカル構成（推奨）
-
-**推奨モデル:** Gemma 2 2B-JPN
-
-**メリット:**
-- ✅ OpenAI APIキー不要
-- ✅ 完全プライバシー保護
-- ✅ ランニングコストゼロ
-- ✅ マルチエージェント環境に最適（3エージェント同時実行で約8-9GB）
-
-**セットアップ:**
-
-1. モデルのダウンロード
-   ```bash
-   ollama pull schroneko/gemma-2-2b-jpn-it
-   ollama pull nomic-embed-text
-   ```
-
-2. `cipher.yml` を設定
-   ```yaml
-   llm:
-     provider: ollama
-     model: schroneko/gemma-2-2b-jpn-it
-     baseUrl: http://localhost:11434
-     maxIterations: 50
-     temperature: 0.3  # ハルシネーション対策
-
-   embedding:
-     type: ollama
-     model: nomic-embed-text
-     baseUrl: $OLLAMA_BASE_URL
-     dimensions: 768
-   ```
-
-3. `.env` の設定
-   ```bash
-   # OpenAI APIキー不要
-   OLLAMA_BASE_URL=http://localhost:11434
-   VECTOR_STORE_TYPE=in-memory
-   CIPHER_LOG_LEVEL=debug
-   ```
-
-4. `.mcp.json` の設定（OPENAI_API_KEYを削除）
-   ```json
-   {
-     "mcpServers": {
-       "cipher": {
-         "type": "stdio",
-         "command": "cipher",
-         "args": ["--mode", "mcp"],
-         "disabled": false,
-         "description": "メモリエージェント（完全ローカル）- 知識蓄積・セッション管理・過去の会話検索",
-         "env": {
-           "CIPHER_AGENT_CONFIG": "/Users/minoru/Dev/Case/InfoCenterSystem/cipher.yml",
-           "OLLAMA_BASE_URL": "$OLLAMA_BASE_URL",
-           "VECTOR_STORE_TYPE": "$VECTOR_STORE_TYPE",
-           "CIPHER_LOG_LEVEL": "$CIPHER_LOG_LEVEL"
-         }
-       }
-     }
-   }
-   ```
-
-詳細は **[ollama-guide.md#完全ローカル構成](ollama-guide.md#完全ローカル構成openai不要)** を参照。
-
-#### ハイブリッド構成
-
-**使用モデル:** OpenAI gpt-4o-mini + Ollama nomic-embed-text
-
-高品質な会話生成が必要な場合はこちらを選択。
-
-詳細は **[ollama-guide.md#ハイブリッド構成](ollama-guide.md#ハイブリッド構成openai--ollama)** を参照。
-
----
-
-**利用可能なツール:**
-
-| ツール名 | 説明 | 使用例 |
-|---------|------|--------|
-| `create_memory` | 新しい記憶を作成 | 重要な情報の保存 |
-| `search_memory` | 過去の記憶を検索 | 類似の会話・知識の検索 |
-| `list_sessions` | セッション一覧を取得 | 過去のセッション確認 |
-| `switch_session` | セッションを切り替え | 別プロジェクトへの切り替え |
-
-**使用方法:**
-
-```
-過去の会話で「Figma連携」について話した内容を教えてください
-```
-
-Cipherが過去のセッションを検索し、関連する知識を提供します。
-
-**セッション管理例:**
-
-```
-新しいセッション"renewal-ui-development"を作成してください
-```
-
-プロジェクトごとにセッションを分けて知識を管理できます。
 
 **注意事項:**
-- 初回実行時、Cipherが自動的にローカルストレージを初期化します
-- 知識はプロジェクトローカルに保存されます（チーム共有されません）
-- セッションIDは`.mcp.local.json`で個別に管理可能
+- Figma DesktopアプリがHTTPサーバー（`http://127.0.0.1:3845/mcp`）を起動します
+- デザインファイルが開かれている必要があります
 
-**カスタム設定（オプション）:**
+---
 
-`.mcp.local.json`でセッションIDを指定:
+## カスタム MCP サーバーの追加
+
+プロジェクト固有のMCPサーバーを追加する場合、`.mcp.json`に定義を追加します：
 
 ```json
 {
   "mcpServers": {
-    "cipher": {
+    "my-custom-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "my-mcp-server"],
+      "description": "カスタムMCPサーバーの説明",
       "env": {
-        "CIPHER_SESSION_ID": "infocenter-system"
+        "API_KEY": "${MY_API_KEY}"
       }
     }
   }
 }
 ```
 
-**Ollamaとの統合:**
-
-Cipher MCPはローカル埋め込みモデル（Ollama）と統合して、セマンティック検索を強化できます。完全ローカル構成またはハイブリッド構成の詳細は **[ollama-guide.md](ollama-guide.md)** を参照してください。
+機密情報（APIキー等）は `.mcp.local.json` に配置してください。
 
 ---
 
@@ -501,14 +376,12 @@ Claude Code起動時にMCPサーバーが表示されない
 
 2. Claude Codeを再起動：
    ```bash
-   # Claude Codeを終了してから再起動
-   claude code
+   claude
    ```
 
-3. ログを確認：
+3. デバッグモードで確認：
    ```bash
-   # Claude Codeのログ確認方法（環境により異なる）
-   tail -f ~/.claude/logs/mcp.log
+   claude --mcp-debug
    ```
 
 ---
@@ -530,7 +403,7 @@ Claude Code起動時にMCPサーバーが表示されない
 
 3. **ローカルサーバーの確認**
    ```bash
-   curl http://127.0.0.1:3845/sse
+   curl http://127.0.0.1:3845/mcp
    ```
    応答がない場合、Figma Desktopを再起動してください。
 
@@ -595,7 +468,7 @@ Claude Code起動時にMCPサーバーが表示されない
 
 1. **`.gitignore`の確認**
    ```bash
-   cat .gitignore | grep mcp
+   grep mcp .gitignore
    ```
 
 2. **Git cacheをクリア**
@@ -629,14 +502,13 @@ Claude Code起動時にMCPサーバーが表示されない
 **A:** 以下のファイルをGit管理します：
 
 **共有するファイル:**
-- ✅ `.mcp.json` (MCPサーバー定義)
-- ✅ `.mcp.env.example` (環境変数ガイド)
-- ✅ `.mcp.local.json.example` (セットアップテンプレート)
-- ✅ `docs/MCP_SETUP.md` (このドキュメント)
+- `.mcp.json` (MCPサーバー定義)
+- `.env.example` (環境変数ガイド)
+- `docs/MCP_SETUP.md` (このドキュメント)
 
 **共有しないファイル:**
-- ❌ `.mcp.local.json` (個人用設定、機密情報)
-- ❌ `.mcp.env` (実際の環境変数)
+- `.mcp.local.json` (個人用設定、機密情報)
+- `.env` (実際の環境変数)
 
 ---
 
@@ -644,19 +516,16 @@ Claude Code起動時にMCPサーバーが表示されない
 
 **A:** `.mcp.json`を編集してサーバー定義を追加します。
 
-**例: SQLite MCPサーバーの追加**
+**例: PostgreSQL MCPサーバーの追加**
 
 ```json
 {
   "mcpServers": {
-    "figma-mcp": { ... },
-    "chrome-devtools": { ... },
-    "serena": { ... },
-    "sqlite": {
+    "postgresql": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["mcp-server-sqlite", "--db-path", "./database.db"],
-      "description": "SQLiteデータベース操作"
+      "args": ["postgres-mcp", "${POSTGRES_CONNECTION_STRING}"],
+      "description": "PostgreSQLデータベース操作"
     }
   }
 }
@@ -673,11 +542,11 @@ Claude Codeを再起動すると、新しいサーバーが利用可能になり
 ```json
 {
   "mcpServers": {
-    "cipher": {
+    "my-server": {
       "type": "stdio",
-      "command": "cipher",
+      "command": "my-command",
       "args": ["--mode", "mcp"],
-      "disabled": true  // 追加
+      "disabled": true
     }
   }
 }
@@ -689,28 +558,14 @@ Claude Codeを再起動すると、新しいサーバーが利用可能になり
 
 **A:** `.mcp.local.json`で個人用設定をオーバーライドします。
 
-**例: 開発環境と本番環境で異なるFigmaトークンを使用**
+**例: 開発者ごとに異なるトークンを使用**
 
-**開発者A（`.mcp.local.json`）:**
 ```json
 {
   "mcpServers": {
     "figma-mcp": {
       "env": {
-        "FIGMA_ACCESS_TOKEN": "figd_dev_token_A"
-      }
-    }
-  }
-}
-```
-
-**開発者B（`.mcp.local.json`）:**
-```json
-{
-  "mcpServers": {
-    "figma-mcp": {
-      "env": {
-        "FIGMA_ACCESS_TOKEN": "figd_dev_token_B"
+        "FIGMA_ACCESS_TOKEN": "figd_your_personal_token"
       }
     }
   }
@@ -723,26 +578,25 @@ Claude Codeを再起動すると、新しいサーバーが利用可能になり
 
 ### DO（推奨）
 
-- ✅ `.mcp.local.json`に機密情報を保存
-- ✅ パスワードマネージャーでトークンを管理
-- ✅ 定期的なトークンローテーション（3ヶ月ごと）
-- ✅ `.gitignore`で機密ファイルを除外
+- `.mcp.local.json`に機密情報を保存
+- パスワードマネージャーでトークンを管理
+- 定期的なトークンローテーション（3ヶ月ごと）
+- `.gitignore`で機密ファイルを除外
 
 ### DON'T（禁止）
 
-- ❌ `.mcp.json`にAPIキーやトークンを含める
-- ❌ Git履歴に機密情報を含める
-- ❌ Slack・メールで平文でトークンを共有
-- ❌ スクリーンショットにトークンを含める
+- `.mcp.json`にAPIキーやトークンを含める
+- Git履歴に機密情報を含める
+- Slack・メールで平文でトークンを共有
+- スクリーンショットにトークンを含める
 
 ---
 
 ## 関連ドキュメント
 
-- [Figma MCP使用ガイド](./figma-mcp-usage-guide.md)
-- [Figmaコンポーネントマッピング](./figma-component-mapping.md)
-- [Claude Code公式ドキュメント](https://code.claude.com/docs)
+- [Claude Code公式ドキュメント](https://code.claude.com/docs/en/)
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
+- [MCP連携ガイド](../.claude/docs/07-mcp-integration.md)
 
 ---
 
@@ -751,9 +605,9 @@ Claude Codeを再起動すると、新しいサーバーが利用可能になり
 問題が解決しない場合は、以下の方法でサポートを受けてください：
 
 1. **Issue作成**: プロジェクトのGitHub Issueに報告
-2. **チームに相談**: Slackの`#infocenter-dev`チャンネル
+2. **チームに相談**: プロジェクトのSlackチャンネル
 3. **ドキュメント確認**: 上記の関連ドキュメントを参照
 
 ---
 
-**最終更新日:** 2025-12-10
+**最終更新日:** 2026-02-09

@@ -10,8 +10,8 @@
     "deny": [
       "Bash(rm -rf /:*)",
       "Bash(rm -rf ~:*)",
-      "Bash(*|bash:*)",
-      "Bash(*|sh:*)",
+      "Bash(:*|bash::*)",
+      "Bash(:*|sh::*)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "Read(~/.kube/**)",

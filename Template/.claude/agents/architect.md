@@ -27,10 +27,7 @@ model: opus
 
 ## 技術スタック
 
-- Next.js 14 (App Router)
-- TypeScript
-- Prisma + PostgreSQL
-- Tailwind CSS + shadcn/ui
+CLAUDE.md の技術スタックセクションを参照してください。
 
 ## 出力形式
 

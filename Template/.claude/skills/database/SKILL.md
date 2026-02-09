@@ -1,6 +1,6 @@
 ---
 name: Database Management
-description: PostgreSQL操作、マイグレーション、最適化
+description: データベース操作、マイグレーション、最適化
 ---
 
 # データベース管理スキル
@@ -16,24 +16,21 @@ description: PostgreSQL操作、マイグレーション、最適化
 ### マイグレーション
 
 ```bash
-# マイグレーション作成
-npx prisma migrate dev --name [migration_name]
+# マイグレーション作成（プロジェクトの ORM に応じたコマンドを使用）
+make db-migrate
 
 # マイグレーション適用
-npx prisma migrate deploy
-
-# スキーマ同期
-npx prisma db push
+make db-deploy
 ```
 
 ### データベース操作
 
 ```bash
-# Prisma Studio起動
-npx prisma studio
+# DB管理ツール起動
+make db-studio
 
 # シード実行
-npx prisma db seed
+make db-seed
 ```
 
 ## 命名規則
@@ -44,9 +41,9 @@ npx prisma db seed
 
 ## 重要な注意事項
 
-- 本番環境では `migrate deploy` を使用
+- 本番環境ではマイグレーション適用コマンドを使用
 - 破壊的変更は段階的に実施
-- インデックスは `CREATE INDEX CONCURRENTLY` を使用
+- インデックスは `CREATE INDEX CONCURRENTLY` を使用（PostgreSQL）
 
 ## 詳細リファレンス
 

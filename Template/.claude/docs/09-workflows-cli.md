@@ -121,7 +121,7 @@ git worktree remove ../project-feature-a
 
 | ショートカット | 機能 |
 |---------------|------|
-| `Shift+Tab` | 権限モード切り替え |
+| `Shift+Tab` | 権限モード切り替え / Plan Mode 切り替え |
 | `Tab` | Thinking（思考）モード切り替え |
 | `Ctrl+K` | 検索 |
 | `↑` | コマンド履歴 |
@@ -145,6 +145,7 @@ git worktree remove ../project-feature-a
 | `/bug` | バグ報告 |
 | `/tasks` | 実行中タスク一覧 |
 | `/compact` | コンテキスト圧縮 |
+| `/hooks` | フック設定確認 |
 
 ---
 

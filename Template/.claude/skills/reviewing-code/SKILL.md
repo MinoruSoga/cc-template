@@ -1,7 +1,7 @@
 ---
 name: reviewing-code
 description: コードレビュー支援。PRレビュー、コード品質チェック、コードを確認時に使用。
-allowed-tools: Read, Grep, Glob
+tools: Read, Grep, Glob
 ---
 
 # Reviewing Code
@@ -22,7 +22,7 @@ allowed-tools: Read, Grep, Glob
 
 ### 3. セキュリティ
 - [ ] XSS対策（入力のサニタイズ）
-- [ ] SQLインジェクション対策（Prismaの適切な使用）
+- [ ] SQLインジェクション対策（パラメータ化クエリ）
 - [ ] CSRF対策
 
 ### 4. パフォーマンス

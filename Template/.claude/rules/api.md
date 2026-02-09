@@ -1,5 +1,7 @@
 ---
-paths: "src/api/**/*.ts"
+paths: "**/*.{ts,tsx,js,jsx,py,go,rs}"
+# paths をプロジェクトの API ディレクトリに合わせて変更してください
+# 例: "src/api/**/*.ts", "app/api/**/*.py"
 ---
 
 # API Development Rules

@@ -4,10 +4,15 @@
   "statusLine": {
     "enabled": true
   },
+  "alwaysThinkingEnabled": true,
+  "respectGitignore": true,
+  "attribution": {
+    "enabled": true,
+    "format": "Co-Authored-By: Claude <noreply@anthropic.com>"
+  },
   "env": {
     "USE_DOCKER": "true",
-    "DOCKER_PROJECT": "your-project-name",
-    "MAX_THINKING_TOKENS": "10000",
+    "DOCKER_PROJECT": "[PROJECT_NAME]",
     "BASH_DEFAULT_TIMEOUT_MS": "60000",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
@@ -29,7 +34,8 @@
     "allowUnsandboxedCommands": true,
     "network": {
       "allowLocalBinding": true,
-      "allowUnixSockets": []
+      "allowUnixSockets": [],
+      "allowedDomains": []
     }
   },
   "enableAllProjectMcpServers": true,
@@ -60,8 +66,6 @@
       "Read(./**/*.p12)",
       "Read(./**/*.pfx)",
       "Read(./node_modules/**)",
-      "Read(./.next/**)",
-      "Read(./out/**)",
       "Read(./dist/**)",
       "Read(./build/**)",
       "Read(./coverage/**)",
@@ -127,7 +131,6 @@
     "defaultMode": "default"
   },
   "cleanupPeriodDays": 30,
-  "includeCoAuthoredBy": true,
   "hooks": {
     "PreToolUse": [
       {
@@ -146,7 +149,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/log-commands.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/log-commands.sh",
+            "async": true
           }
         ]
       },
@@ -160,13 +164,15 @@
         ]
       }
     ],
+    "UserPromptSubmit": [],
     "Notification": [
       {
         "matcher": ".*",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify-slack.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify-slack.sh",
+            "async": true
           }
         ]
       }

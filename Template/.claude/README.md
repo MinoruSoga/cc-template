@@ -11,7 +11,7 @@
 - `skills/` - カスタムSkills
   - `generating-commits/` - コミットメッセージ生成
   - `reviewing-code/` - コードレビュー支援
-  - `analyzing-prisma/` - Prismaスキーマ分析
+  - `analyzing-schema/` - データベーススキーマ分析
 - `agents/` - サブエージェント（モデル別特化）
   - `architect.md` - 設計・セキュリティ監査 (Opus)
   - `implementer.md` - 機能実装 (Sonnet)
@@ -19,7 +19,7 @@
   - `debugger.md` - デバッグ (Sonnet)
   - `researcher.md` - コード検索 (Haiku)
   - `formatter.md` - コミット生成・整形 (Haiku)
-  - `prisma-expert.md` - DB設計 (Sonnet)
+  - `db-expert.md` - DB設計 (Sonnet)
 - `plans/` - 実装計画・タスク管理
 - `sessions/` - 会話履歴（自動生成）
 - `file-history/` - ファイル変更履歴（自動生成）
@@ -78,10 +78,8 @@
 #### `DOCKER_PROJECT: "your-project-name"`
 Dockerプロジェクト名。コンテナ識別に使用（プロジェクトごとに変更）。
 
-#### `MAX_THINKING_TOKENS: "10000"`
-**拡張思考モード**を有効化。Claudeが複雑な問題を解決する際に、より深く考えることができます。
-- デフォルト: 無効
-- 推奨値: 10000（複雑な実装や設計時に有効）
+#### Extended Thinking
+`alwaysThinkingEnabled: true` を `settings.json` に設定することで、Extended Thinking が常時有効化されます。従来の `MAX_THINKING_TOKENS` 環境変数は不要になりました。
 
 #### `BASH_DEFAULT_TIMEOUT_MS: "60000"`
 Bashコマンドのタイムアウトを60秒に延長。
@@ -105,22 +103,13 @@ Bashコマンドのタイムアウトを60秒に延長。
 **自動注入される情報:**
 
 1. **プロジェクト情報**
-   - プロジェクト名: JewelryStock（宝石店在庫管理システム）
+   - CLAUDE.md で定義されたプロジェクト名と概要
 
 2. **技術スタック**
-   - Frontend: Next.js 14 App Router, React Server Components, TypeScript
-   - Styling: Tailwind CSS, shadcn/ui
-   - Backend: Next.js API Routes, Server Actions
-   - ORM: Prisma
-   - Database: PostgreSQL
-   - Build: pnpm (Docker経由: make コマンド使用)
+   - CLAUDE.md の技術スタックセクションを参照
 
 3. **重要ディレクトリ**
-   - `src/app/` - ページ・ルート
-   - `src/components/` - UIコンポーネント
-   - `src/lib/` - ユーティリティ
-   - `src/actions/` - Server Actions
-   - `prisma/schema.prisma` - DBスキーマ
+   - CLAUDE.md のディレクトリ構造セクションを参照
 
 4. **コーディング原則**
    - 型安全性最優先 - anyを避け、適切な型定義
@@ -222,104 +211,12 @@ Bashコマンドのタイムアウトを60秒に延長。
 - セッション開始時から即座に利用可能
 
 **利用可能なMCPサーバー:**
-- `serena` - セマンティックコード解析（TypeScriptインデックス済み）
-- `context7-mcp` - React/Next.js/TypeScriptドキュメント検索
+- `serena` - セマンティックコード解析（シンボル検索・リファクタリング支援）
+- `context7-mcp` - ライブラリドキュメント検索
 - `playwright` - E2Eテスト・ブラウザ自動化
 - `chrome-devtools` - ブラウザデバッグ・スクレイピング
 - `sqlite` - SQLiteデータベース操作
 - `figma-mcp` - Figmaデザイン連携
-- `cipher` - メモリエージェント（完全ローカル）
-
----
-
-## Cipher MCP 設定
-
-このテンプレートには Cipher MCP（メモリエージェント）の完全ローカル構成が含まれています。
-
-### 特徴
-
-- ✅ **OpenAI不要** - 完全ローカルLLM（Gemma 2 2B-JPN）を使用
-- ✅ **プライバシー保護** - すべてのデータがローカルで処理
-- ✅ **ランニングコストゼロ** - API料金不要
-- ✅ **マルチエージェント最適化** - 3エージェント同時実行で約8-9GB
-
-### セットアップ手順
-
-#### 1. プロジェクトルートに設定ファイルをコピー
-
-```bash
-# プロジェクトルートディレクトリで実行
-cp /path/to/Template/cipher.yml ./cipher.yml
-cp /path/to/Template/.mcp.json ./.mcp.json
-cp /path/to/Template/.env.example ./.env
-```
-
-#### 2. `.mcp.json` のパスを更新
-
-`.mcp.json` 内の `CIPHER_AGENT_CONFIG` を実際のプロジェクトパスに変更：
-
-```json
-{
-  "mcpServers": {
-    "cipher": {
-      "env": {
-        "CIPHER_AGENT_CONFIG": "/absolute/path/to/your-project/cipher.yml"
-      }
-    }
-  }
-}
-```
-
-**例:**
-```json
-"CIPHER_AGENT_CONFIG": "/Users/username/projects/my-project/cipher.yml"
-```
-
-#### 3. Ollamaモデルをダウンロード
-
-```bash
-# LLMモデル（会話生成用）
-ollama pull schroneko/gemma-2-2b-jpn-it
-
-# 埋め込みモデル（セマンティック検索用）
-ollama pull nomic-embed-text
-```
-
-**ダウンロード時間:** 約3-5分（合計3GB）
-
-#### 4. Claude Codeを起動
-
-```bash
-claude code
-```
-
-### 使用方法
-
-セットアップ完了後、Claude Code内で以下のように使用できます：
-
-```
-過去の会話で「認証機能」について話した内容を教えてください
-```
-
-Cipher MCPが完全ローカルで動作し、プライバシーを保ちながら検索結果を返します。
-
-### 詳細ドキュメント
-
-- **[../docs/MCP_SETUP.md](../docs/MCP_SETUP.md)** - MCP設定ガイド（全体）
-- **[../docs/ollama-guide.md](../docs/ollama-guide.md)** - Ollama使い方・トラブルシューティング
-
-### 構成オプション
-
-| 構成 | LLM | 埋め込み | コスト | プライバシー | 推奨環境 |
-|------|-----|---------|--------|------------|----------|
-| **完全ローカル** 🏆 | Ollama | Ollama | 無料 | 完全ローカル | マルチエージェント |
-| **ハイブリッド** | OpenAI | Ollama | 有料 | 部分クラウド | 高品質会話重視 |
-
-このテンプレートはデフォルトで完全ローカル構成です。
-
-### トラブルシューティング
-
-問題が発生した場合は、`../docs/MCP_SETUP.md` の「トラブルシューティング」セクションを参照してください。
 
 ---
 
@@ -344,7 +241,7 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 - セキュリティ問題の検出
 - パフォーマンス・保守性の評価
 
-#### `analyzing-prisma` - Prismaスキーマ分析
+#### `analyzing-schema` - データベーススキーマ分析
 **トリガー:** 「スキーマ」「マイグレーション」「DBモデル」
 
 **機能:**（読み取り専用）
@@ -361,8 +258,8 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 ユーザー: PRをレビューして
 → reviewing-code スキルが有効化
 
-ユーザー: Prismaスキーマを確認して
-→ analyzing-prisma スキルが有効化
+ユーザー: DBスキーマを確認して
+→ analyzing-schema スキルが有効化
 ```
 
 ---
@@ -390,7 +287,7 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 | `debugger` | Sonnet | バグ調査、エラー分析、修正提案 |
 | `researcher` | Haiku | コード検索、ファイル探索、パターン調査 |
 | `formatter` | Haiku | コミットメッセージ生成、コード整形 |
-| `prisma-expert` | Sonnet | スキーマ設計、マイグレーション計画 |
+| `db-expert` | Sonnet | スキーマ設計、マイグレーション計画 |
 
 #### 使用方法
 
@@ -419,7 +316,7 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 #### `deny` - 拒否リスト
 **直接実行を拒否するコマンド:**
 - パッケージマネージャー（npm, pnpm, yarn, npx）
-- ビルドツール（node, next, tsc, eslint, prisma）
+- ビルドツール（node, tsc, eslint 等）
 
 **理由:** これらは`make`コマンド経由で実行し、一貫性と安全性を確保。
 
@@ -459,14 +356,16 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 #### `cleanupPeriodDays: 30`
 会話履歴の保持期間（日数）。30日経過後、古いセッションは自動削除されます。
 
-#### `includeCoAuthoredBy: true`
-Gitコミット時に Claude との共著情報を追加。
+#### `attribution`
+Gitコミット時に Claude との共著情報を追加。`includeCoAuthoredBy` の後継設定。
 
-**コミットメッセージ例:**
-```
-feat: ユーザー認証機能を追加
-
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+```json
+{
+  "attribution": {
+    "enabled": true,
+    "format": "Co-Authored-By: Claude <noreply@anthropic.com>"
+  }
+}
 ```
 
 ---
@@ -518,4 +417,4 @@ claude
 
 ---
 
-**最終更新:** 2025-12-10 (MCP設定更新: playwright, sqlite, context7-mcp追加)
+**最終更新:** 2026-02-09

@@ -46,11 +46,15 @@
 | [16-quality-monitoring.md](16-quality-monitoring.md) | 品質監視ベストプラクティス |
 | [17-long-running-agents.md](17-long-running-agents.md) | 長時間エージェント |
 
-### その他
+### 新機能（2026）
 
-| ファイル | 内容 |
-|---------|------|
-| [ollama-guide.md](ollama-guide.md) | Ollamaローカルモデルガイド |
+| トピック | 関連ドキュメント |
+|---------|----------------|
+| Extended Thinking (`alwaysThinkingEnabled`) | [03-settings-reference.md](03-settings-reference.md) |
+| Tool Search (`ENABLE_TOOL_SEARCH`) | [07-mcp-integration.md](07-mcp-integration.md) |
+| Agent Teams（実験的） | [05-subagents.md](05-subagents.md) |
+| セッション管理 (`--continue`, `--resume`) | [01-getting-started.md](01-getting-started.md) |
+| 非同期フック (`async: true`) | [04-hooks-system.md](04-hooks-system.md) |
 
 ---
 
@@ -93,4 +97,4 @@ claude -p "query"         # ワンショット
 ---
 
 **公式ドキュメント:** https://code.claude.com/docs/en/
-**最終更新:** 2025-12-12
+**最終更新:** 2026-02-09

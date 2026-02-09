@@ -30,7 +30,7 @@
 ---
 name: generating-commit-messages
 description: Gitの差分からコミットメッセージを生成。コミット作成時やステージ済み変更のレビュー時に使用。
-allowed-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash
 ---
 
 # コミットメッセージ生成
@@ -61,7 +61,8 @@ Conventional Commits形式を使用:
 |------|------|------|
 | `name` | スキル名（ケバブケース） | ✅ |
 | `description` | 説明とトリガーワード | ✅ |
-| `allowed-tools` | 許可されたツール | ❌ |
+| `tools` | 許可されたツール | ❌ |
+| `disable-model-invocation` | モデル呼び出しを無効化（スクリプト専用スキル） | ❌ |
 | `version` | バージョン | ❌ |
 
 ---
@@ -81,7 +82,7 @@ Conventional Commits形式を使用:
 - `excel-data-analysis` - Excelデータ分析
 - `generating-commit-messages` - コミットメッセージ生成
 - `reviewing-code` - コードレビュー支援
-- `analyzing-prisma` - Prismaスキーマ分析
+- `analyzing-schema` - データベーススキーマ分析
 
 ---
 
@@ -93,7 +94,7 @@ Conventional Commits形式を使用:
 ---
 name: reviewing-code
 description: コードの品質、セキュリティ、保守性をレビュー。「レビュー」「チェック」などで起動。
-allowed-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash
 ---
 
 # コードレビュー
@@ -112,16 +113,16 @@ allowed-tools: Read, Grep, Glob, Bash
 **Suggestion**（改善案）:
 ```
 
-### Prismaスキーマ分析
+### スキーマ分析
 
 ```yaml
 ---
-name: analyzing-prisma
-description: Prismaスキーマの分析と改善提案。「スキーマ」「モデル」「DB」などで起動。
-allowed-tools: Read, Grep, Glob
+name: analyzing-schema
+description: データベーススキーマの分析と改善提案。「スキーマ」「モデル」「DB」などで起動。
+tools: Read, Grep, Glob
 ---
 
-# Prismaスキーマ分析
+# スキーマ分析
 
 ## 確認項目
 - リレーション設計
@@ -141,7 +142,7 @@ allowed-tools: Read, Grep, Glob
 ---
 name: testing
 description: テストケースの作成と実行。「テスト」「カバレッジ」などで起動。
-allowed-tools: Read, Write, Bash, Grep, Glob
+tools: Read, Write, Bash, Grep, Glob
 ---
 
 # テスト作成
@@ -236,3 +237,25 @@ skills/
 | コード依存関係 | 悪意のあるパッケージがないか |
 | バンドルリソース | 不正なファイルがないか |
 | 外部ネットワーク接続 | 不審な通信がないか |
+
+---
+
+## クロスプラットフォーム対応
+
+スキルは macOS、Linux、Windows（WSL含む）で動作します。シェルスクリプトを含むスキルは、プラットフォーム差異に注意してください。
+
+---
+
+## スクリプトバンドル機能
+
+スキルディレクトリにスクリプトファイルを含めることで、スキル実行時に自動的にバンドルされます：
+
+```
+skills/
+├── my-skill/
+│   ├── SKILL.md        # メインスキル定義
+│   ├── scripts/        # バンドルスクリプト
+│   │   ├── setup.sh
+│   │   └── validate.py
+│   └── templates/      # テンプレートファイル
+```

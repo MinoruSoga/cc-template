@@ -20,13 +20,13 @@ Claude Codeは複数レベルのメモリを階層的に読み込みます。
 # プロジェクト名
 
 ## 概要
-Next.jsベースのEコマースプラットフォーム
+[プロジェクトの説明]
 
 ## 技術スタック
-- Frontend: Next.js 14, TypeScript, Tailwind CSS
-- Backend: Node.js, Prisma
-- Database: PostgreSQL
-- Testing: Jest, Playwright
+- Frontend: [フレームワーク], TypeScript
+- Backend: [サーバー], [ORM]
+- Database: [DB]
+- Testing: [テストフレームワーク]
 
 ## 共通コマンド
 ```bash

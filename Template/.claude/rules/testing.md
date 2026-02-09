@@ -1,5 +1,5 @@
 ---
-paths: "**/*.{test,spec}.{ts,tsx,js,jsx}"
+paths: "**/*.{test,spec}.{ts,tsx,js,jsx,py}"
 ---
 
 # Testing Rules

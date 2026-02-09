@@ -1,24 +1,24 @@
 ---
-name: analyzing-prisma
-description: Prismaスキーマの分析・マイグレーション支援。スキーマ、マイグレーション、DBモデル時に使用。
-allowed-tools: Read, Grep, Glob
+name: analyzing-schema
+description: データベーススキーマの分析・マイグレーション支援。スキーマ、マイグレーション、DBモデル時に使用。
+tools: Read, Grep, Glob
 ---
 
-# Analyzing Prisma
+# Analyzing Schema
 
-Prismaスキーマの分析とマイグレーション計画の作成。
+データベーススキーマの分析とマイグレーション計画の作成。
 
 ## Workflow
 
-- [ ] `prisma/schema.prisma` を読み取り
+- [ ] スキーマファイルを読み取り
 - [ ] 既存モデルとリレーションを把握
 - [ ] 変更の影響範囲を特定
 - [ ] マイグレーション計画を提案
 
 ## Key Files
 
-- `prisma/schema.prisma` - スキーマ定義
-- `prisma/migrations/` - マイグレーション履歴
+- スキーマ定義ファイル（プロジェクトの ORM に応じて特定）
+- マイグレーション履歴ディレクトリ
 
 ## Checklist
 
@@ -26,22 +26,12 @@ Prismaスキーマの分析とマイグレーション計画の作成。
 - [ ] 適切なフィールド型を使用しているか
 - [ ] リレーションは正しく定義されているか
 - [ ] インデックスは必要な箇所に設定されているか
-- [ ] `@unique`, `@default` は適切か
+- [ ] ユニーク制約、デフォルト値は適切か
 
 ### マイグレーション
 - [ ] 破壊的変更はないか（カラム削除、型変更）
 - [ ] データ移行が必要か
 - [ ] ロールバック計画はあるか
-
-## Commands Reference
-
-| Command | 用途 |
-|---------|------|
-| `make prisma-generate` | Prisma Client生成 |
-| `make prisma-format` | スキーマフォーマット |
-| `make prisma-validate` | スキーマ検証 |
-| `make db-migrate` | マイグレーション実行 |
-| `make db-studio` | Prisma Studio起動 |
 
 ## Output Format
 

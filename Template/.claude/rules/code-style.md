@@ -1,5 +1,5 @@
 ---
-paths: "**/*.{ts,tsx,js,jsx}"
+paths: "**/*.{ts,tsx,js,jsx,py,go,rs}"
 ---
 
 # Code Style Rules
@@ -13,11 +13,11 @@ paths: "**/*.{ts,tsx,js,jsx}"
 
 ## Import Order
 
-1. React/Framework imports
+1. Standard library / Framework imports
 2. External libraries
-3. Internal modules (@/)
+3. Internal modules
 4. Relative imports
-5. Type imports
+5. Type imports (if applicable)
 
 ## Prohibited
 

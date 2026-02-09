@@ -17,8 +17,8 @@
       ],
       "description": "セマンティックコード解析（TypeScript 336ファイルインデックス済み）",
       "env": {
-        "SERENA_MAX_MEM": "1024",
-        "SERENA_MAX_WORKERS": "2"
+        "SERENA_MAX_MEM": "512",
+        "SERENA_MAX_WORKERS": "1"
       }
     },
     "context7-mcp": {
@@ -27,47 +27,15 @@
       "args": ["-y", "@upstash/context7-mcp"],
       "description": "React/Next.js/TypeScriptドキュメント検索",
       "env": {
-        "NODE_OPTIONS": "--max-old-space-size=512"
+        "NODE_OPTIONS": "--max-old-space-size=256"
       }
     },
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"],
-      "description": "E2Eテスト・ブラウザ自動化",
-      "env": {}
-    },
     "chrome-devtools": {
+      "disabled": true,
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"],
       "description": "ブラウザデバッグ・スクレイピング"
-    },
-    "sqlite": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "mcp-server-sqlite",
-        "--db-path",
-        "${PROJECT_ROOT}/database.db"
-      ],
-      "description": "SQLiteデータベース操作",
-      "env": {}
-    },
-    "postgresql": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "postgres-mcp",
-        "${POSTGRES_CONNECTION_STRING}"
-      ],
-      "description": "PostgreSQLデータベース操作（読み書き・パフォーマンス分析）",
-      "env": {}
-    },
-    "figma-mcp": {
-      "type": "sse",
-      "url": "http://127.0.0.1:3845/sse",
-      "description": "Figmaデザイン連携"
     },
     "cipher": {
       "type": "stdio",
@@ -78,7 +46,7 @@
         "--port",
         "3001",
         "--max-mem",
-        "512",
+        "256",
         "--embedder",
         "local"
       ],
@@ -91,6 +59,11 @@
         "VECTOR_STORE_TYPE": "${VECTOR_STORE_TYPE}",
         "CIPHER_LOG_LEVEL": "${CIPHER_LOG_LEVEL}"
       }
+    },
+    "puppeteer": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
     }
   }
 }

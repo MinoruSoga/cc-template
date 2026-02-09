@@ -6,8 +6,7 @@
     "playwright",
     "chrome-devtools",
     "sqlite",
-    "figma-mcp",
-    "cipher"
+    "figma-mcp"
   ],
   "permissions": {
     "allow": [

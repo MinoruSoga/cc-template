@@ -166,6 +166,17 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 | `Esc` | 中断 |
 | `Ctrl + R` | 履歴検索 |
 
+### ローカルLLM (Ollama)
+
+| コマンド | 説明 |
+|---------|------|
+| `brew services start ollama` | Ollama 起動 |
+| `brew services stop ollama` | Ollama 停止 |
+| `brew services restart ollama` | Ollama 再起動 |
+| `ollama list` | インストール済みモデル一覧 |
+| `ollama ps` | 実行中モデル確認 |
+| `ollama run <model>` | モデル実行 |
+
 ---
 
 ## 🔗 公式ドキュメント

@@ -30,7 +30,7 @@
         "--port",
         "32123"
       ],
-      "description": "セマンティックコード解析（TypeScript 336ファイルインデックス済み）",
+      "description": "セマンティックコード解析（シンボル検索・リファクタリング支援）",
       "env": {
         "SERENA_MAX_MEM": "1024",
         "SERENA_MAX_WORKERS": "2"
@@ -40,7 +40,7 @@
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "description": "React/Next.js/TypeScriptドキュメント検索",
+      "description": "ライブラリドキュメント検索",
       "env": {
         "NODE_OPTIONS": "--max-old-space-size=512"
       }
@@ -80,32 +80,9 @@
       "env": {}
     },
     "figma-mcp": {
-      "type": "sse",
-      "url": "http://127.0.0.1:3845/sse",
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp",
       "description": "Figmaデザイン連携"
-    },
-    "cipher": {
-      "type": "stdio",
-      "command": "cipher",
-      "args": [
-        "--mode",
-        "mcp",
-        "--port",
-        "3001",
-        "--max-mem",
-        "512",
-        "--embedder",
-        "local"
-      ],
-      "disabled": false,
-      "description": "JewelryStock専用メモリエージェント（ポート3001）",
-      "env": {
-        "CIPHER_AGENT_CONFIG": "${PROJECT_ROOT}/cipher.yml",
-        "CIPHER_PORT": "3001",
-        "OLLAMA_BASE_URL": "${OLLAMA_BASE_URL}",
-        "VECTOR_STORE_TYPE": "${VECTOR_STORE_TYPE}",
-        "CIPHER_LOG_LEVEL": "${CIPHER_LOG_LEVEL}"
-      }
     }
   }
 }

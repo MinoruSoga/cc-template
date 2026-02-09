@@ -19,7 +19,7 @@ echo $DATABASE_URL
 ```
 
 **チェックリスト**:
-- [ ] PostgreSQL サービスが起動している
+- [ ] データベースサービスが起動している
 - [ ] ポート番号が正しい（デフォルト: 5432）
 - [ ] ユーザー名/パスワードが正しい
 - [ ] データベースが存在する
@@ -33,16 +33,15 @@ echo $DATABASE_URL
 **対処手順**:
 ```bash
 # 1. 状態確認
-npx prisma migrate status
+make db-status
 
 # 2. 失敗したマイグレーションを確認
-ls -la prisma/migrations/
+ls -la migrations/
 
 # 3. 開発環境: リセット
-npx prisma migrate reset
+make db-reset
 
-# 4. 本番環境: 手動修正
-psql $DATABASE_URL -c "DELETE FROM _prisma_migrations WHERE migration_name = 'XXXXX';"
+# 4. 本番環境: 手動修正（ORM のマイグレーションテーブルを確認）
 ```
 
 **予防策**:
@@ -57,11 +56,11 @@ psql $DATABASE_URL -c "DELETE FROM _prisma_migrations WHERE migration_name = 'XX
 
 **対処**:
 ```bash
-# スキーマとDBの差分確認
-npx prisma db pull --force
+# スキーマとDBの差分確認（ORM のコマンドで差分を取得）
+make db-status
 
 # 差分を解消
-npx prisma migrate dev
+make db-migrate
 ```
 
 ---
@@ -80,12 +79,9 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 ```
 
 **対処**:
-```prisma
-// インデックス追加
-model User {
-  email String
-  @@index([email])
-}
+```sql
+-- インデックス追加
+CREATE INDEX CONCURRENTLY idx_users_email ON users(email);
 ```
 
 ---
@@ -144,8 +140,8 @@ psql $DATABASE_URL < backup.sql
 ### ロールバック
 
 ```bash
-# 特定のマイグレーションまで戻す
-npx prisma migrate resolve --rolled-back <migration_name>
+# ORM のロールバックコマンドを使用
+make db-rollback
 ```
 
 ## 連絡先

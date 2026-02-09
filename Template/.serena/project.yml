@@ -6,11 +6,10 @@
 # ===============================
 # 対応言語: typescript, python, java, cpp, rust, go, php など
 languages:
-  - typescript
+- typescript
 
-# ===============================
-# エンコーディング
-# ===============================
+# the encoding used by text files in the project
+# For a list of possible encodings, see https://docs.python.org/3.11/library/codecs.html#standard-encodings
 encoding: 'utf-8'
 
 # ===============================
@@ -24,94 +23,72 @@ ignore_all_files_in_gitignore: true
 # ===============================
 ignored_paths:
   # 依存関係
-  - 'node_modules/'
-  - '.pnpm-store/'
-  - '.yarn/'
-  - 'vendor/'
-  - '__pycache__/'
-  - '.venv/'
-  - 'venv/'
-  
-  # ビルド成果物
-  - '.next/'
-  - 'out/'
-  - 'build/'
-  - 'dist/'
-  - 'target/'
-  - 'bin/'
-  - 'obj/'
-  
-  # テスト関連
-  - 'tests/'
-  - 'test-results/'
-  - 'playwright-report/'
-  - 'coverage/'
-  - '__tests__/'
-  - '*.test.ts'
-  - '*.test.tsx'
-  - '*.test.js'
-  - '*.test.jsx'
-  - '*.spec.ts'
-  - '*.spec.tsx'
-  - '*.spec.js'
-  - '*.spec.jsx'
-  
-  # ログ・デバッグファイル
-  - 'logs/'
-  - '*.log'
-  - '*.log.*'
-  
-  # ドキュメント・メディア（大容量）
-  - '*.pdf'
-  - '*.mp4'
-  - '*.mp3'
-  - '*.zip'
-  - '*.tar.gz'
-  
-  # キャッシュ・一時ファイル
-  - '.cache/'
-  - 'tmp/'
-  - 'temp/'
-  - '.parcel-cache/'
-  - '.turbo/'
-  - '*.tsbuildinfo'
-  
-  # データベース
-  - '*.db'
-  - '*.sqlite'
-  - '*.sqlite3'
-  - 'postgres_data/'
-  - 'pgdata/'
-  
-  # データファイル
-  - 'data/'
-  - 'uploads/'
-  - 'public/uploads/'
-  
-  # エディタ・IDE設定
-  - '.vscode/'
-  - '.idea/'
-  - '.claude/sessions/'
-  - '.claude/plans/'
-  - '.claude/file-history/'
-  - '*.swp'
-  - '*.swo'
-  - '*~'
-  
-  # OS固有
-  - '.DS_Store'
-  - 'Thumbs.db'
-  - '._*'
-  - 'Desktop.ini'
-  
-  # 環境変数
-  - '.env*'
+- 'node_modules/'
+- '.pnpm-store/'
+- '.yarn/'
+- 'vendor/'
+- '__pycache__/'
+- '.venv/'
+- 'venv/'
+- '.next/'
+- 'out/'
+- 'build/'
+- 'dist/'
+- 'target/'
+- 'bin/'
+- 'obj/'
+- 'tests/'
+- 'test-results/'
+- 'playwright-report/'
+- 'coverage/'
+- '__tests__/'
+- '*.test.ts'
+- '*.test.tsx'
+- '*.test.js'
+- '*.test.jsx'
+- '*.spec.ts'
+- '*.spec.tsx'
+- '*.spec.js'
+- '*.spec.jsx'
+- 'logs/'
+- '*.log'
+- '*.log.*'
+- '*.pdf'
+- '*.mp4'
+- '*.mp3'
+- '*.zip'
+- '*.tar.gz'
+- '.cache/'
+- 'tmp/'
+- 'temp/'
+- '.parcel-cache/'
+- '.turbo/'
+- '*.tsbuildinfo'
+- '*.db'
+- '*.sqlite'
+- '*.sqlite3'
+- 'postgres_data/'
+- 'pgdata/'
+- 'data/'
+- 'uploads/'
+- 'public/uploads/'
+- '.vscode/'
+- '.idea/'
+- '.claude/sessions/'
+- '.claude/plans/'
+- '.claude/file-history/'
+- '*.swp'
+- '*.swo'
+- '*~'
+- '.DS_Store'
+- 'Thumbs.db'
+- '._*'
+- 'Desktop.ini'
+- '.env*'
 
-# ===============================
-# 読み取り専用モード
-# ===============================
-# trueの場合、編集ツールが無効化されメモリ使用量が削減される
-# コード分析のみを行う場合はtrueを推奨
+# whether the project is in read-only mode
+# If set to true, all editing tools will be disabled and attempts to use them will result in an error
+# Added on 2025-04-18
 read_only: false
 
 # ===============================
@@ -122,7 +99,6 @@ read_only: false
 excluded_tools:
   # シェル実行（セキュリティリスクあり）
   # - execute_shell_command
-  
   # 編集系（read_only: true で自動無効化）
   # - create_text_file
   # - delete_lines
@@ -131,14 +107,11 @@ excluded_tools:
   # - insert_before_symbol
   # - replace_lines
   # - replace_symbol_body
-  
   # メモリ関連（必要に応じて）
   # - write_memory
   # - delete_memory
-  
   # オンボーディング（初回のみ必要）
   # - onboarding
-  
   # その他（必要に応じて）
   # - summarize_changes
   # - think_about_collected_information
@@ -162,3 +135,22 @@ project_name: ''
 # ===============================
 # 追加で有効化したいツールがある場合
 included_optional_tools: []
+
+# list of mode names to that are always to be included in the set of active modes
+# The full set of modes to be activated is base_modes + default_modes.
+# If the setting is undefined, the base_modes from the global configuration (serena_config.yml) apply.
+# Otherwise, this setting overrides the global configuration.
+# Set this to [] to disable base modes for this project.
+# Set this to a list of mode names to always include the respective modes for this project.
+base_modes:
+
+# list of mode names that are to be activated by default.
+# The full set of modes to be activated is base_modes + default_modes.
+# If the setting is undefined, the default_modes from the global configuration (serena_config.yml) apply.
+# Otherwise, this overrides the setting from the global configuration (serena_config.yml).
+# This setting can, in turn, be overridden by CLI parameters (--mode).
+default_modes:
+
+# fixed set of tools to use as the base tool set (if non-empty), replacing Serena's default set of tools.
+# This cannot be combined with non-empty excluded_tools or included_optional_tools.
+fixed_tools: []

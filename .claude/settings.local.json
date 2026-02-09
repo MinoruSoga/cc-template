@@ -6,7 +6,13 @@
       "mcp__filesystem__list_directory",
       "mcp__filesystem__directory_tree",
       "Bash(cat:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "mcp__filesystem__read_text_file",
+      "Bash(ollama show:*)",
+      "mcp__serena__list_dir",
+      "Bash(tree:*)",
+      "WebSearch",
+      "Bash(bash:*)"
     ]
   }
 }

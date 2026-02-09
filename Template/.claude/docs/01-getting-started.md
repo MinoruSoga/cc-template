@@ -69,11 +69,29 @@ claude
 | `claude` | インタラクティブモード開始 |
 | `claude "query"` | 初期プロンプト付きで開始 |
 | `claude -p "query"` | ワンショットクエリ（終了後exit） |
-| `claude -c` | 最新の会話を継続 |
+| `claude -c` / `--continue` | 最新の会話を継続 |
 | `claude -r` / `--resume` | 会話選択ピッカーを表示 |
+| `claude --from-pr <url>` | GitHub PR の差分をコンテキストとして開始 |
 | `claude update` | 最新版にアップデート |
 | `/help` | ヘルプ表示 |
 | `/clear` | 会話履歴クリア |
+
+---
+
+---
+
+## セッション管理
+
+```bash
+# 最新セッションを継続
+claude --continue
+
+# セッション一覧から選択して再開
+claude --resume
+
+# PR からコンテキスト付きで開始
+claude --from-pr https://github.com/owner/repo/pull/123
+```
 
 ---
 

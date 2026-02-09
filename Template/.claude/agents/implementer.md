@@ -34,11 +34,7 @@ model: sonnet
 
 ## 技術スタック
 
-- Next.js 14 (App Router, Server Components)
-- TypeScript
-- Prisma
-- Tailwind CSS + shadcn/ui
-- Jest / Vitest
+CLAUDE.md の技術スタックセクションを参照してください。
 
 ## ワークフロー
 

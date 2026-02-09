@@ -2,7 +2,7 @@
 
 Claude Code の包括的な設定テンプレートです。
 
-## 📁 構成
+## 構成
 
 ```
 Template/
@@ -16,26 +16,26 @@ Template/
 │   ├── commands/              # カスタムスラッシュコマンド
 │   ├── hooks/                 # フックスクリプト
 │   ├── docs/                  # ドキュメント・ベストプラクティス
+│   ├── rules/                 # モジュール型ルール
 │   ├── scripts/               # 初期化・ユーティリティスクリプト
 │   ├── output-styles/         # 出力スタイル定義
 │   └── features.json          # 機能追跡テンプレート
 │
 ├── .mcp.json                  # MCP サーバー設定
 ├── .env.example               # 環境変数テンプレート
-├── cipher.yml                 # Cipher MCP 設定
 ├── CLAUDE.md                  # プロジェクトルート用 CLAUDE.md
 └── docs/                      # 追加ドキュメント
 ```
 
 ---
 
-## 🚀 使用方法
+## 使用方法
 
-### 方法1: ccフォルダから自動適用（推奨）
+### 方法1: cc フォルダから自動適用（推奨）
 
 ```bash
-# ccフォルダでClaude Codeを起動
-cd /Users/minoru/Dev/cc
+# cc フォルダで Claude Code を起動
+cd /path/to/cc
 claude
 
 # コマンドで作業プロジェクトに適用
@@ -46,9 +46,9 @@ claude
 
 ```bash
 # テンプレートをプロジェクトにコピー
-cp -r /Users/minoru/Dev/cc/Template/.claude /path/to/your/project/
-cp /Users/minoru/Dev/cc/Template/.mcp.json /path/to/your/project/
-cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
+cp -r Template/.claude /path/to/your/project/
+cp Template/.mcp.json /path/to/your/project/
+cp Template/CLAUDE.md /path/to/your/project/
 
 # プロジェクトに合わせてカスタマイズ
 # 1. CLAUDE.md のプロジェクト情報を更新
@@ -58,7 +58,7 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 
 ---
 
-## ⚙️ カスタマイズ項目
+## カスタマイズ項目
 
 ### 1. CLAUDE.md（必須）
 
@@ -75,8 +75,7 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 ```json
 {
   "env": {
-    "DOCKER_PROJECT": "your-project-name",
-    "MAX_THINKING_TOKENS": "10000"
+    "DOCKER_PROJECT": "your-project-name"
   }
 }
 ```
@@ -95,23 +94,11 @@ cp /Users/minoru/Dev/cc/Template/CLAUDE.md /path/to/your/project/
 
 ### 3. .mcp.json
 
-MCP サーバーのパスを更新:
-
-```json
-{
-  "mcpServers": {
-    "cipher": {
-      "env": {
-        "CIPHER_AGENT_CONFIG": "/absolute/path/to/your-project/cipher.yml"
-      }
-    }
-  }
-}
-```
+MCP サーバーのパスやトークンをプロジェクトに合わせて更新。
 
 ---
 
-## 🤖 含まれるエージェント
+## 含まれるエージェント
 
 | エージェント | モデル | 用途 |
 |-------------|--------|------|
@@ -121,26 +108,31 @@ MCP サーバーのパスを更新:
 | `debugger` | Sonnet | バグ調査、エラー分析 |
 | `researcher` | Haiku | コード検索、ファイル探索 |
 | `formatter` | Haiku | コミット生成、コード整形 |
-| `prisma-expert` | Sonnet | DB設計、マイグレーション計画 |
+| `db-expert` | Sonnet | DB設計、マイグレーション計画 |
 
 ---
 
-## 📚 含まれるスキル
+## 含まれるスキル
 
 | スキル | トリガー | 用途 |
 |--------|---------|------|
 | `generating-commits` | 「コミット」 | Conventional Commits 形式でメッセージ生成 |
 | `reviewing-code` | 「レビュー」 | コードレビュー支援 |
-| `analyzing-prisma` | 「スキーマ」 | Prisma スキーマ分析 |
+| `analyzing-schema` | 「スキーマ」 | データベーススキーマ分析 |
 | `database` | DB操作時 | データベース管理 |
 | `deployment` | デプロイ時 | デプロイメント支援 |
 | `testing` | テスト時 | テスト作成・実行 |
 | `context-engineering` | 複雑なタスク | コンテキスト管理 |
 | `multi-agent` | 大規模タスク | マルチエージェント設計 |
 
+### Skills vs Commands
+
+- **Skills**: Claude が自律的に判断して起動。`SKILL.md` で定義。
+- **Commands**: ユーザーが `/command` で明示的に実行。`.claude/commands/*.md` で定義。
+
 ---
 
-## 🔧 含まれるコマンド
+## 含まれるコマンド
 
 | コマンド | 説明 |
 |---------|------|
@@ -157,19 +149,32 @@ MCP サーバーのパスを更新:
 
 ---
 
-## 🪝 含まれるフック
+## 含まれるフック
 
 | フック | タイミング | 機能 |
 |--------|----------|------|
-| `block-dangerous.sh` | PreToolUse | 危険コマンドをブロック |
+| `block-dangerous.sh` | PreToolUse | 危険コマンドをブロック（JSON決定出力） |
 | `auto-format.sh` | PostToolUse | 自動フォーマット |
-| `log-commands.sh` | PostToolUse | コマンドログ記録 |
+| `log-commands.sh` | PostToolUse | コマンドログ記録（async） |
 | `session-init.sh` | SessionStart | セッション初期化 |
 | `cleanup.sh` | Stop | クリーンアップ |
 
 ---
 
-## 📖 ドキュメント
+## 2026年の新機能
+
+| 機能 | 説明 |
+|------|------|
+| Extended Thinking | `alwaysThinkingEnabled: true` で常時有効化 |
+| Tool Search | `ENABLE_TOOL_SEARCH=auto:5` で遅延ロード |
+| Agent Teams | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`（実験的） |
+| セッション管理 | `--continue`, `--resume`, `--from-pr` |
+| 非同期フック | `"async": true` でバックグラウンド実行 |
+| Attribution | `includeCoAuthoredBy` → `attribution` ブロック |
+
+---
+
+## ドキュメント
 
 `.claude/docs/` に含まれるベストプラクティス:
 
@@ -182,13 +187,11 @@ MCP サーバーのパスを更新:
 
 ---
 
-## 🔗 関連リソース
+## 関連リソース
 
-- [Claude Code 公式ドキュメント](https://docs.anthropic.com/claude-code)
+- [Claude Code 公式ドキュメント](https://code.claude.com/docs/en/)
 - [MCP 公式サイト](https://modelcontextprotocol.io/)
-- [cc-news/](../cc-news/) - 最新のベストプラクティス（参考）
-- [cc-blog/](../cc-blog/) - 設計思想・理論（参考）
 
 ---
 
-**最終更新:** 2025-12-13
+**最終更新:** 2026-02-09
