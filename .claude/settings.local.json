@@ -12,7 +12,9 @@
       "mcp__serena__list_dir",
       "Bash(tree:*)",
       "WebSearch",
-      "Bash(bash:*)"
+      "Bash(bash:*)",
+      "Bash(chmod:*)",
+      "Bash(.claude/hooks/block-dangerous.sh)"
     ]
   }
 }

@@ -1,9 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "outputStyle": "senior-engineer",
-  "statusLine": {
-    "enabled": true
-  },
   "alwaysThinkingEnabled": true,
   "respectGitignore": true,
   "attribution": {
