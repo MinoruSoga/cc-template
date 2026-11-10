@@ -6,6 +6,8 @@ triggers:
   - "並列処理"
   - "オーケストレーター"
   - "サブエージェント"
+  - "Agent Teams"
+  - "エージェントチーム"
 ---
 
 # マルチエージェントシステム設計
@@ -42,6 +44,57 @@ triggers:
      │ 統合処理  │  ← 結果統合・引用
      └──────────┘
 ```
+
+---
+
+## 利用可能なエージェント
+
+| エージェント | モデル | 読み取り専用 | 用途 |
+|-------------|--------|:---:|------|
+| `architect` | Opus | ✓ | アーキテクチャ設計、セキュリティ監査 |
+| `planner` | Sonnet | ✓ | タスク分解、実装計画 |
+| `implementer` | Sonnet | | 機能実装、リファクタリング |
+| `reviewer` | Sonnet | ✓ | コードレビュー、PR確認 |
+| `debugger` | Sonnet | | バグ調査、エラー分析 |
+| `db-expert` | Sonnet | | DB設計、マイグレーション |
+| `web-researcher` | Haiku | | 外部ドキュメント・ライブラリ調査 |
+| `documenter` | Haiku | | ドキュメント自動生成 |
+
+---
+
+## チームワークフローテンプレート
+
+### 機能実装チーム
+
+```
+planner → implementer → tester → reviewer
+```
+
+1. `planner`: タスクを分解し、実装順序を提案
+2. `implementer`: 計画に基づいて実装
+3. `tester`: 実装した機能のテストを作成・実行
+4. `reviewer`: 最終的なコードレビュー
+
+### バグ修正チーム
+
+```
+web-researcher → debugger → implementer → tester
+```
+
+1. `web-researcher`: エラーメッセージの外部情報を調査（必要に応じて）
+2. `debugger`: 根本原因を特定
+3. `implementer`: 修正を実装
+4. `tester`: 回帰テストを作成・実行
+
+### アーキテクチャレビューチーム
+
+```
+architect → reviewer → planner
+```
+
+1. `architect`: システム構造を分析し、設計判断を評価
+2. `reviewer`: 現在のコード品質とアーキテクチャ準拠を確認
+3. `planner`: 改善タスクを分解し、優先順位を付けて計画
 
 ---
 
@@ -93,56 +146,13 @@ triggers:
 
 ---
 
-## 実践例
-
-### コード探索の並列化
-
-```python
-# 並列で複数の観点から検索
-results = await asyncio.gather(
-    search_by_function_name(query),
-    search_by_file_pattern(query),
-    search_by_keyword(query)
-)
-# 結果を統合
-combined = merge_search_results(results)
-```
-
-### Claude Codeでの活用
-
-```
-1. Explore エージェントで並列検索:
-   - 「src/auth/ の認証ロジックを調査」
-   - 「src/api/ のエンドポイントを確認」
-   - 「tests/ のテストパターンを分析」
-
-2. 各結果を統合:
-   - 認証: JWT + セッション併用
-   - API: RESTful、v2エンドポイント
-   - テスト: Jest + Supertest
-
-3. 統合した情報で計画:
-   - 新機能は既存パターンに従う
-   - テストは同様のスタイルで作成
-```
-
----
-
-## パフォーマンス比較
-
-| 構成 | トークン | 品質 | 時間 |
-|------|---------|------|------|
-| シングル（Opus） | 1x | ベースライン | 100% |
-| マルチ（Opus+Sonnet） | ~15x | +90.2% | -90% |
-
-**注意**: コスト増加は高価値タスクでのみ正当化
-
----
-
 ## 委任テンプレート
 
 ```markdown
 ## サブエージェントへの指示
+
+### 担当エージェント
+[エージェント名: implementer / tester / reviewer 等]
 
 ### 担当領域
 [具体的なトピック/ファイル範囲]
@@ -163,6 +173,17 @@ combined = merge_search_results(results)
 - [避けるべきこと]
 - [優先すべきこと]
 ```
+
+---
+
+## パフォーマンス比較
+
+| 構成 | トークン | 品質 | 時間 |
+|------|---------|------|------|
+| シングル（Opus） | 1x | ベースライン | 100% |
+| マルチ（Opus+Sonnet） | ~15x | +90.2% | -90% |
+
+**注意**: コスト増加は高価値タスクでのみ正当化
 
 ---
 
@@ -187,6 +208,7 @@ combined = merge_search_results(results)
 
 ## 参照
 
+- [Agent Teams 詳細](../docs/18-agent-teams.md)
 - [マルチエージェントシステム詳細](../docs/15-multi-agent-systems.md)
 - [エージェント設計パターン](../docs/13-agent-design-patterns.md)
 - [How We Built Our Multi-Agent Research System](https://www.anthropic.com/engineering/multi-agent-research-system)

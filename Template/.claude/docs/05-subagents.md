@@ -36,7 +36,6 @@ permissionMode: default
 - 適切なエラーハンドリング
 - シークレットや API キーの露出がないか
 - 入力検証の実装
-- テストカバレッジ
 - パフォーマンス考慮事項
 
 ## フィードバック形式
@@ -58,6 +57,15 @@ permissionMode: default
 | `model` | 使用モデル | `sonnet`, `opus`, `haiku` |
 | `permissionMode` | 権限モード | `default`, `plan` |
 
+### `permissionMode` について
+
+| モード | 説明 | 用途 |
+|--------|------|------|
+| `default` | ファイル編集・Bash実行が可能 | 実装、テスト、デバッグ |
+| `plan` | 読み取り専用。コードの変更不可 | 設計分析、レビュー、計画 |
+
+`permissionMode: plan` を設定すると、エージェントは読み取り専用モードで動作します。アーキテクチャ分析やコードレビューなど、分析・評価のみを行うエージェントに適しています。
+
 ---
 
 ## 組み込みサブエージェント
@@ -70,6 +78,21 @@ permissionMode: default
 
 ---
 
+## プロジェクトサブエージェント一覧
+
+| エージェント | モデル | permissionMode | 用途 |
+|-------------|--------|---------------|------|
+| `architect` | Opus | plan | アーキテクチャ設計、セキュリティ監査 |
+| `planner` | Sonnet | plan | タスク分解、実装計画 |
+| `implementer` | Sonnet | default | 機能実装、リファクタリング |
+| `reviewer` | Sonnet | plan | コードレビュー、PR確認 |
+| `debugger` | Sonnet | default | バグ調査、エラー分析 |
+| `db-expert` | Sonnet | default | DB設計、マイグレーション |
+| `web-researcher` | Haiku | default | 外部ドキュメント・ライブラリ調査 |
+| `documenter` | Haiku | default | ドキュメント自動生成 |
+
+---
+
 ## サブエージェントの使用
 
 ### インタラクティブに管理
@@ -79,7 +102,10 @@ permissionMode: default
 
 ### 直接呼び出し
 ```
-> Use the code-reviewer subagent to check my recent changes
+> Use the architect subagent to design the authentication system
+> Have the reviewer subagent check my recent changes
+> Ask the debugger subagent to investigate this error
+> Use the planner subagent to break down this feature into tasks
 ```
 
 ### CLI でカスタム定義
@@ -95,79 +121,35 @@ claude --agents '{
 
 ---
 
-## サブエージェント例
+## 3層モデル: Skills vs Agents vs Commands
 
-### デバッガー
+| 層 | トリガー | コンテキスト | 用途 |
+|---|---------|-----------|------|
+| **Skills** | Claude が自律判断 | メイン会話と共有 | 軽量・単発タスク |
+| **Agents** | 明示的委譲 | 独立コンテキスト | 複雑・複数ステップタスク |
+| **Commands** | ユーザーが `/command` で実行 | メイン会話 | ショートカット |
 
-```markdown
----
-name: debugger
-description: バグ調査、エラー分析、修正提案を専門とするデバッグエキスパート
-tools: Read, Grep, Glob, Bash
-model: sonnet
----
+### Skills と Agents のクロスリファレンス
 
-バグの根本原因を特定し、修正を提案します。
-
-## 手順
-1. エラーメッセージを分析
-2. スタックトレースを追跡
-3. 関連コードを検索
-4. 仮説を立てて検証
-5. 修正案を提示
-```
-
-### リサーチャー
-
-```markdown
----
-name: researcher
-description: コードベース探索、ファイル検索、構造理解を専門
-tools: Read, Grep, Glob
-model: haiku
-permissionMode: plan
----
-
-コードベースを効率的に探索し、情報を収集します。
-
-## 得意なタスク
-- ファイルやクラスの検索
-- 依存関係の追跡
-- 実装パターンの特定
-```
-
-### フォーマッター
-
-```markdown
----
-name: formatter
-description: コミットメッセージ生成、コード整形を専門
-tools: Bash, Read
-model: haiku
----
-
-Conventional Commits形式でコミットメッセージを生成します。
-
-## 形式
-- feat: 新機能
-- fix: バグ修正
-- docs: ドキュメント
-- refactor: リファクタリング
-- test: テスト
-- chore: その他
-```
+| スキル | 対応エージェント | 使い分け |
+|--------|----------------|---------|
+| `reviewing-code` | `reviewer` | スキル=軽量チェック / エージェント=PR全体レビュー |
+| `testing` | `tester` | スキル=テスト方針ガイド / エージェント=テストスイート一括作成 |
+| `analyzing-schema` / `database` | `db-expert` | スキル=分析・単発操作 / エージェント=設計・マイグレーション |
+| `generating-commits` | — | スキルのみ（エージェント不要） |
 
 ---
 
 ## ベストプラクティス
 
-1. **明確なdescription**: いつ使うべきかを明記
+1. **明確なdescription**: いつ使うべきかを明記（起動条件を含める）
 2. **最小限のtools**: 必要なツールのみ許可
 3. **適切なmodel**:
    - 複雑な分析: `opus`
    - 一般的なタスク: `sonnet`
-   - 高速検索: `haiku`
-4. **具体的な手順**: 実行手順を明記
+   - 高速・低コスト: `haiku`
+4. **具体的な手順**: 実行手順をステップで明記
+5. **permissionMode**: 読み取り専用エージェントには `plan` を設定
 
 ---
 
@@ -179,6 +161,32 @@ Conventional Commits形式でコミットメッセージを生成します。
 CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 ```
 
+### 概要
+
 Agent Teams では、オーケストレーターエージェントが複数のサブエージェントにタスクを分配し、結果を統合します。大規模なコードベース変更やマルチファイルリファクタリングに有効です。
 
-> この機能は実験的であり、今後のリリースで変更される可能性があります。
+### チーム構成テンプレート
+
+| チーム | フロー | 用途 |
+|--------|--------|------|
+| 機能実装 | `planner` → `implementer` → `tester` → `reviewer` | 新機能の設計から実装まで |
+| バグ修正 | `web-researcher` → `debugger` → `implementer` → `tester` | バグ調査から修正・テストまで |
+| アーキテクチャレビュー | `architect` → `reviewer` → `planner` | 設計評価と改善計画 |
+
+### コスト考慮事項
+
+| 構成 | トークン倍率 |
+|------|------------|
+| シングルエージェント | 1x |
+| 2エージェント | ~5x |
+| 3-4エージェント | ~10-15x |
+
+Agent Teams はトークン消費が大きいため、高価値タスクでのみ使用してください。
+
+### 注意事項
+
+- この機能は **実験的** であり、今後のリリースで変更される可能性があります
+- 各エージェントは独立コンテキストで動作するため、コンテキスト共有には限界があります
+- `permissionMode: plan` のエージェントは読み取り専用です
+
+詳細は [Agent Teams ドキュメント](18-agent-teams.md) を参照してください。

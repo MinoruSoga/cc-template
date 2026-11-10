@@ -41,7 +41,6 @@
 > run tests for the refactored code
 ```
 
-### テスト作成
 ```bash
 > find functions in NotificationsService.swift that are not covered by tests
 > add tests for the notification service

@@ -135,7 +135,6 @@ allowed-tools: Read, Grep, Glob
 - マイグレーション計画
 ```
 
-### テスト作成
 
 ```yaml
 ---
@@ -144,7 +143,6 @@ description: テストケースの作成と実行。「テスト」「カバレ�
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
 
-# テスト作成
 
 ## 手順
 1. 対象コードを分析
@@ -153,12 +151,8 @@ allowed-tools: Read, Write, Bash, Grep, Glob
 4. テストを実行
 
 ## テストの種類
-- ユニットテスト: 関数単位
-- 統合テスト: モジュール間
-- E2Eテスト: ユーザーフロー
 
 ## 品質基準
-- カバレッジ80%以上
 - エッジケースを含む
 - 読みやすいテスト名
 ```

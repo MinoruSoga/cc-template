@@ -81,7 +81,7 @@ src/
 | エージェント | モデル | 用途 |
 |-------------|--------|------|
 | `architect` | Opus | アーキテクチャ設計、セキュリティ監査 |
-| `implementer` | Sonnet | 機能実装、テスト作成 |
+| `implementer` | Sonnet | 機能実装 |
 | `reviewer` | Sonnet | コードレビュー、品質チェック |
 | `debugger` | Sonnet | バグ調査、エラー分析 |
 | `researcher` | Haiku | コード検索、ファイル探索 |
@@ -103,7 +103,6 @@ src/
 | analyzing-prisma | 「スキーマ」 | Prismaスキーマ分析 |
 | database | DB操作時 | データベース管理 |
 | deployment | デプロイ時 | デプロイメント |
-| testing | テスト時 | テスト作成・実行 |
 
 ---
 
@@ -148,7 +147,6 @@ src/
 |--------|------|--------|
 | `filesystem` | ファイル操作 | プロジェクト内ファイルの読み書き |
 | `github` | GitHub連携 | Issue作成、PR操作、コード検索 |
-| `puppeteer` | ブラウザ自動化 | スクレイピング、E2Eテスト |
 | `postgres` | DB操作 | SQLクエリ実行、テーブル操作 |
 | `slack` | Slack連携 | メッセージ送信、チャンネル操作 |
 

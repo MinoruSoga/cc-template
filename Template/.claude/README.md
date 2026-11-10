@@ -13,13 +13,14 @@
   - `reviewing-code/` - コードレビュー支援
   - `analyzing-schema/` - データベーススキーマ分析
 - `agents/` - サブエージェント（モデル別特化）
-  - `architect.md` - 設計・セキュリティ監査 (Opus)
-  - `implementer.md` - 機能実装 (Sonnet)
-  - `reviewer.md` - コードレビュー (Sonnet)
-  - `debugger.md` - デバッグ (Sonnet)
-  - `researcher.md` - コード検索 (Haiku)
-  - `formatter.md` - コミット生成・整形 (Haiku)
-  - `db-expert.md` - DB設計 (Sonnet)
+  - `architect.md` - アーキテクチャ設計・セキュリティ監査 (Opus, plan)
+  - `planner.md` - タスク分解・実装計画 (Sonnet, plan)
+  - `implementer.md` - 機能実装・リファクタリング (Sonnet)
+  - `reviewer.md` - コードレビュー・PR確認 (Sonnet, plan)
+  - `debugger.md` - バグ調査・エラー分析 (Sonnet)
+  - `db-expert.md` - DB設計・マイグレーション (Sonnet)
+  - `web-researcher.md` - 外部ドキュメント・ライブラリ調査 (Haiku)
+  - `documenter.md` - ドキュメント自動生成 (Haiku)
 - `plans/` - 実装計画・タスク管理
 - `sessions/` - 会話履歴（自動生成）
 - `file-history/` - ファイル変更履歴（自動生成）
@@ -213,7 +214,6 @@ Bashコマンドのタイムアウトを60秒に延長。
 **利用可能なMCPサーバー:**
 - `serena` - セマンティックコード解析（シンボル検索・リファクタリング支援）
 - `context7-mcp` - ライブラリドキュメント検索
-- `playwright` - E2Eテスト・ブラウザ自動化
 - `chrome-devtools` - ブラウザデバッグ・スクレイピング
 - `sqlite` - SQLiteデータベース操作
 - `figma-mcp` - Figmaデザイン連携
@@ -274,20 +274,23 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 | モデル | コスト | 速度 | 用途 |
 |--------|--------|------|------|
 | **Opus** | 高 | 遅 | 複雑な設計、セキュリティ監査 |
-| **Sonnet** | 中 | 中 | 実装、レビュー、デバッグ |
-| **Haiku** | 低 | 速 | 検索、フォーマット |
+| **Sonnet** | 中 | 中 | 実装、レビュー、デバッグ、計画、テスト |
+| **Haiku** | 低 | 速 | 外部調査、ドキュメント生成 |
 
 #### 利用可能なサブエージェント
 
-| エージェント | モデル | 用途 |
-|--------------|--------|------|
-| `architect` | Opus | アーキテクチャ設計、重要判断、セキュリティ監査 |
-| `implementer` | Sonnet | 機能実装、テスト作成、ドキュメント |
-| `reviewer` | Sonnet | コードレビュー、PR確認、品質チェック |
-| `debugger` | Sonnet | バグ調査、エラー分析、修正提案 |
-| `researcher` | Haiku | コード検索、ファイル探索、パターン調査 |
-| `formatter` | Haiku | コミットメッセージ生成、コード整形 |
-| `db-expert` | Sonnet | スキーマ設計、マイグレーション計画 |
+| エージェント | モデル | permissionMode | 用途 |
+|-------------|--------|---------------|------|
+| `architect` | Opus | plan | アーキテクチャ設計、セキュリティ監査 |
+| `planner` | Sonnet | plan | タスク分解、実装計画 |
+| `implementer` | Sonnet | default | 機能実装、リファクタリング |
+| `reviewer` | Sonnet | plan | コードレビュー、PR確認 |
+| `debugger` | Sonnet | default | バグ調査、エラー分析 |
+| `db-expert` | Sonnet | default | DB設計、マイグレーション |
+| `web-researcher` | Haiku | default | 外部ドキュメント・ライブラリ調査 |
+| `documenter` | Haiku | default | ドキュメント自動生成 |
+
+`permissionMode: plan` のエージェントは読み取り専用で、コードの変更を行いません。
 
 #### 使用方法
 
@@ -301,13 +304,35 @@ Skillsは、特定のタスクに特化した指示をClaudeに提供する機�
 > Ask the debugger subagent to investigate this error
 ```
 
-#### Skills vs Sub-agents
+#### 3層モデル: Skills vs Agents vs Commands
 
-| 機能 | Skills | Sub-agents |
-|------|--------|------------|
-| コンテキスト | メイン会話と共有 | **独立** |
-| モデル選択 | 不可 | **可能** |
-| 複雑なタスク | 簡単な指示向け | **複雑なワークフロー向け** |
+| 層 | トリガー | コンテキスト | 用途 |
+|---|---------|-----------|------|
+| **Skills** | Claude が自律判断 | メイン会話と共有 | 軽量・単発タスク |
+| **Agents** | 明示的委譲 | 独立コンテキスト | 複雑・複数ステップタスク |
+| **Commands** | ユーザーが `/command` で実行 | メイン会話 | ショートカット |
+
+**Skills と Agents の重複解消:**
+| スキル | 対応エージェント | 使い分け |
+|--------|----------------|---------|
+| `reviewing-code` | `reviewer` | スキル=軽量チェック / エージェント=PR全体レビュー |
+| `testing` | `tester` | スキル=テスト方針ガイド / エージェント=テストスイート一括作成 |
+| `analyzing-schema` | `db-expert` | スキル=スキーマ分析 / エージェント=新スキーマ設計・マイグレーション |
+| `generating-commits` | — | スキルのみ（エージェント不要） |
+
+#### Agent Teams（実験的）
+
+複数のエージェントが協調してタスクを遂行する機能です。詳細は [Agent Teams ドキュメント](docs/18-agent-teams.md) を参照。
+
+```bash
+# 有効化
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```
+
+チーム構成例:
+- **機能実装:** `planner` → `implementer` → `tester` → `reviewer`
+- **バグ修正:** `web-researcher` → `debugger` → `implementer` → `tester`
+- **アーキテクチャレビュー:** `architect` → `reviewer` → `planner`
 
 ---
 
